@@ -15,6 +15,7 @@ export function LockScreen() {
   const { goHome } = useShell()
   const [drag, setDrag] = useState(0)
   const startY = useRef<number | null>(null)
+  const moved = useRef(false)
 
   function unlock() {
     unlockPhone()
@@ -23,25 +24,34 @@ export function LockScreen() {
 
   function onPointerDown(e: React.PointerEvent) {
     startY.current = e.clientY
+    moved.current = false
   }
   function onPointerMove(e: React.PointerEvent) {
     if (startY.current == null) return
     const dy = startY.current - e.clientY
+    if (Math.abs(dy) > 6) moved.current = true
     setDrag(Math.max(0, dy))
   }
   function onPointerUp() {
-    if (drag > 90) unlock()
+    // Unlock on a deliberate upward swipe, or on a simple tap (Act 1 has no PIN,
+    // so tap-to-open is a forgiving fallback when gesture tracking is flaky).
+    if (drag > 50 || !moved.current) unlock()
     setDrag(0)
     startY.current = null
+    moved.current = false
   }
 
   return (
     <div
-      className="relative flex h-full flex-col bg-gradient-to-b from-zinc-900 via-black to-zinc-950 text-white"
+      className="relative flex h-full touch-none select-none flex-col bg-gradient-to-b from-zinc-900 via-black to-zinc-950 text-white"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
+      onPointerCancel={() => {
+        setDrag(0)
+        startY.current = null
+        moved.current = false
+      }}
       style={{ transform: `translateY(${-drag * 0.4}px)` }}
     >
       {/* faux wallpaper glow */}
