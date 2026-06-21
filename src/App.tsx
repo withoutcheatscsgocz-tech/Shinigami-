@@ -7,6 +7,7 @@ import { useEvents } from './game/useEvents'
 import { StatusBar } from './components/StatusBar'
 import { NavBar } from './components/NavBar'
 import { Banners } from './components/Banners'
+import { Recents } from './components/Recents'
 import { LockScreen } from './screens/LockScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { Ending } from './screens/Ending'
@@ -85,6 +86,7 @@ export default function App() {
         ) : (
           <CurrentApp id={view as AppId} />
         )}
+        {!onLock && <Recents />}
         <Banners />
       </main>
       {!onLock && <NavBar />}

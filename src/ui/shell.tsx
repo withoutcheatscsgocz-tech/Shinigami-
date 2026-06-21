@@ -1,5 +1,6 @@
-// Phone shell navigation: which "screen" is showing (lock / home / an app),
-// plus a lightweight notification queue that drops banners into the status bar.
+// Phone shell navigation: which "screen" is showing (lock / home / an app), the
+// recent-apps (multitasking) stack, plus a lightweight notification queue that
+// drops banners into the status bar.
 
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
 import type { AppId } from '../game/types'
@@ -26,6 +27,16 @@ interface ShellCtx {
   /** Global glitch pulse toggled by scripted events. */
   glitching: boolean
   pulseGlitch: (ms?: number) => void
+  // --- recents / app switcher ---
+  /** Apps the player has opened, most-recent first (ephemeral, like a real
+   *  phone's recents — cleared on a full restart, not part of the save). */
+  recents: AppId[]
+  recentsOpen: boolean
+  openRecents: () => void
+  closeRecents: () => void
+  /** Swipe a card away to "close" that app. */
+  removeRecent: (app: AppId) => void
+  clearRecents: () => void
 }
 
 const Ctx = createContext<ShellCtx | null>(null)
@@ -34,10 +45,48 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   const [view, setView] = useState<View>('lock')
   const [banners, setBanners] = useState<Banner[]>([])
   const [glitching, setGlitching] = useState(false)
+  const [recents, setRecents] = useState<AppId[]>([])
+  const [recentsOpen, setRecentsOpen] = useState(false)
 
-  const openApp = useCallback((app: AppId) => setView(app), [])
-  const goHome = useCallback(() => setView('home'), [])
-  const goLock = useCallback(() => setView('lock'), [])
+  const openApp = useCallback((app: AppId) => {
+    setRecentsOpen(false)
+    setView(app)
+    // Move the app to the front of the recents stack (dedup).
+    setRecents((prev) => [app, ...prev.filter((a) => a !== app)])
+  }, [])
+
+  const goHome = useCallback(() => {
+    setRecentsOpen(false)
+    setView('home')
+  }, [])
+
+  const goLock = useCallback(() => {
+    setRecentsOpen(false)
+    setView('lock')
+  }, [])
+
+  const openRecents = useCallback(() => {
+    // Nothing to show if no app has ever been opened.
+    setRecents((prev) => {
+      if (prev.length > 0) setRecentsOpen(true)
+      return prev
+    })
+  }, [])
+
+  const closeRecents = useCallback(() => setRecentsOpen(false), [])
+
+  const removeRecent = useCallback((app: AppId) => {
+    setRecents((prev) => {
+      const next = prev.filter((a) => a !== app)
+      if (next.length === 0) setRecentsOpen(false)
+      return next
+    })
+  }, [])
+
+  const clearRecents = useCallback(() => {
+    setRecents([])
+    setRecentsOpen(false)
+  }, [])
 
   const pushBanner = useCallback((b: Omit<Banner, 'id'>) => {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
@@ -58,7 +107,23 @@ export function ShellProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider
-      value={{ view, openApp, goHome, goLock, banners, pushBanner, dismissBanner, glitching, pulseGlitch }}
+      value={{
+        view,
+        openApp,
+        goHome,
+        goLock,
+        banners,
+        pushBanner,
+        dismissBanner,
+        glitching,
+        pulseGlitch,
+        recents,
+        recentsOpen,
+        openRecents,
+        closeRecents,
+        removeRecent,
+        clearRecents,
+      }}
     >
       {children}
     </Ctx.Provider>
