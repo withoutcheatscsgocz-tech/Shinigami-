@@ -51,7 +51,8 @@ player has been helping him cover up the murder of someone else entirely.
 | 6 | **"Mum" (Vance)** | Adam's mother | family chat, flavor | — |
 | 7 | **Det. Salter** | police officer | the "official" frame, clues and fog | — |
 | 8 | **Mrs. Connolly** (68) | neighbour | heard something the night of the murder | — |
-| — | flavor contacts | pizza, carrier, gym, work group "Meridian Realty 🏠", spam | phone realism | — |
+| 9 | **Ray Doyle** (50s) | runs the poker table Adam plays | menacing creditor; the "obvious" reason he ran | A |
+| — | flavor contacts | pizza, carrier, gym, 5-a-side ⚽, landlord (Mr Okafor), DPD, StreamBox, scam, work group "Meridian Realty 🏠" | phone realism / lived-in texture | — |
 
 ---
 
@@ -70,6 +71,8 @@ Dates below are relative; concrete dates live in `caseData.ts`.
 |------|-------|----------------------------|
 | −5 weeks | Adam + Clara "happy couple", anniversary, normal chats | Photos (album "2024"), Messages |
 | −4 weeks | First cracks: Adam checks Clara's phone, jealousy | Messages (Clara↔Eve screenshots), Notes |
+| −6 weeks (≈5/9) | Adam loses £2k at Ray Doyle's poker table (arc A seed) | Ray thread, betting screenshot, browser |
+| −3.5 weeks (5/17–18) | Adam crops a chat screenshot to "prove" a Luke affair (arc B seed) | Luke thread, note "L.", photo |
 | −3 weeks | Clara reconnects with ex Luke — seeking help/escape | Messages (Luke), Deleted contacts |
 | −2 weeks | Clara secretly installs a **hidden app** (recorder disguised as "Calculator"), records; drafts a message to a DV helpline | Hidden app, Notes (draft) |
 | −10 days | Arguments escalate; Adam finds proof Clara plans to leave | Messages, Voicemail |
@@ -77,7 +80,8 @@ Dates below are relative; concrete dates live in `caseData.ts`.
 | −2 days (Thu) | Adam arranges an "alibi" weekend at the cabin, invites only Clara | Calendar (deleted event), Messages (Tom) |
 | **DAY 0 (Sat) night** | **Adam kills Clara at the cabin.** Neighbour Mrs. Connolly hears a scream | Voicemail (secret recording), Location, Photos (locked) |
 | Day 0 night–Sun | Adam moves and hides the body; returns | Location (remote point), Photos (timestamp "now") |
-| Day +1 (Sun) | From **Clara's** phone Adam sends "I need space, going away" to Paige/Eve | Messages (screenshots in Adam's phone), Paige↔Adam |
+| Day 0 (Sat) AM | Adam settles Ray (£2,250), buys tarp/rope/bleach (Hardware Barn), books a coach ticket on Clara's card (false trail) | Bank, receipt photo, coach screenshot, location |
+| Day +1 (Sun) | From **Clara's** phone Adam sends "I need space, going away" to Paige/Eve; uses her card at a Manchester cashpoint to fake her escape | Messages (screenshots), Paige↔Adam (card/CCTV beats) |
 | Day +1–2 | Adam goes "off grid"; people start treating **Adam** as missing | Det. Salter, family chat |
 | Day +2..+6 | **Actions/payments leave Adam's phone (dated AFTER the "disappearance")** | Bank (notifications), Messages Tom, Settings (log) |
 | **"NOW" (game)** | Adam (alive) uses the **Assistant** app to task VERA with "investigating" the phone and ultimately wiping it | the whole game |
@@ -155,28 +159,43 @@ Each act is locked behind a **gate** (password / event / read X / time).
 ## 5. Red herrings — detail
 
 ### A) Debts / dangerous people (peaks in Act 2)
-- **For:** texts from "Tom" about "money by Monday", an unknown number "last
-  chance", withdrawals/payments in the bank, a note "R. — 250".
-- **Against / collapse:** the payments are Adam's own (moving money before
-  fleeing); the "threats" predate the disappearance and concern a routine
-  commission dispute; in a later thread Tom confirms the "debt" was settled
-  long ago.
-- **Truth underneath:** Adam was preparing money to disappear.
+- **For:** **Ray Doyle** thread (gambling debt, "I know where she works",
+  "tick tock"); a Ray voicemail; texts from "Tom" about "money by Monday"; an
+  unknown number "last chance"; withdrawals + a £2,250 transfer to "R. Doyle —
+  cards" in the bank; betting-account screenshot photo (−£2,000); browser
+  search "what happens if you can't pay a gambling debt"; notes "R. — 250" and
+  "Ray" ("if it goes bad, the cabin").
+- **Against / collapse:** Ray's last messages (Act 4) confirm Adam paid in full
+  on 6/5 — *before* he "vanished" — so the debt isn't the reason; the unknown
+  threats predate the disappearance; the big transfers are Adam's own (moving
+  money before fleeing).
+- **Truth underneath:** Adam was preparing money to disappear; the "Ray" trail
+  is a convenient story. The note "if it goes bad, the cabin" quietly seeds the
+  murder site.
 
 ### B) Secret affair / Clara ran away (peaks in Act 3)
-- **For:** Luke (the ex) — warm messages, "you can come to me any time",
-  deleted contacts, a "screenshot" of Clara's chat.
-- **Against / collapse:** context shows Clara was begging Luke for help leaving,
-  not romance; the "flirt" is taken out of context; Adam did the deleting.
+- **For:** Luke (the ex) — a **cropped screenshot** ("Clara → L ❤️ miss you x")
+  Adam himself sent + saved as a photo; note "L." ("she's texting the ex");
+  Paige asking "was it Luke? did she run off with him?"; browser search
+  "recover deleted whatsapp messages"; a calendar "lunch — town (who with?)".
+- **Against / collapse:** Luke states the screenshot was cropped/out of order
+  and that *Adam* sent it (his own Notes handwriting is visible behind it,
+  Act 4); context shows Clara was begging Luke for help leaving, not romance.
 - **Truth underneath:** Clara was planning to leave Adam → motive for murder.
 
 ### C) Domestic violence / Clara is hiding (peaks in Act 4) — PARTLY TRUE
-- **For:** Eve ("don't worry, you'll be safe at mine"), a draft message to a DV
-  helpline (Notes), photos of bruises (locked album), Paige "I'm scared of him".
-- **Against the conclusion:** clues show the escape never happened — Clara's
-  last activity ends the night of the murder; the "I'm leaving, I need space"
-  messages were sent by Adam from her phone (screenshots).
+- **For:** Eve ("you'll be safe at mine", + voicemail offering the spare room);
+  a draft to a DV helpline and a screenshot of Clara's searches ("women's
+  refuge", "leave without your partner knowing"); photos of bruises (locked
+  album); Paige "I'm scared of him"; **the false-hope beat** — Clara's card
+  used at a Manchester cashpoint on Sunday + a coach-ticket screenshot
+  (Ashford→Manchester) → "she got away".
+- **Against the conclusion:** the escape never happened — Clara's last activity
+  ends the night of the murder; the coach ticket was never scanned at the gate;
+  Manchester CCTV shows the cashpoint user was "a man in a cap" (Adam);
+  the "I'm leaving, I need space" messages were sent by Adam from her phone.
 - **Truth underneath:** the violence was real; Clara did not get out in time.
+  The escape "evidence" is Adam laying a false trail with her card and phone.
 
 ---
 
