@@ -136,6 +136,46 @@ export const caseData: CaseData = {
       avatar: 'from-yellow-400 to-amber-600',
       initials: 'FZ',
     },
+    ray: {
+      id: 'ray',
+      name: 'Ray (poker)',
+      avatar: 'from-red-700 to-zinc-900',
+      initials: 'R',
+      number: '+44 7700 900088',
+      lastActive: 'last seen Saturday',
+    },
+    fives: {
+      id: 'fives',
+      name: '5-a-side ⚽',
+      avatar: 'from-green-600 to-lime-700',
+      initials: '⚽',
+      lastActive: '7 participants',
+    },
+    landlord: {
+      id: 'landlord',
+      name: 'Mr Okafor (letting)',
+      avatar: 'from-stone-500 to-stone-700',
+      initials: 'O',
+      number: '+44 7700 900155',
+    },
+    dpd: {
+      id: 'dpd',
+      name: 'DPD',
+      avatar: 'from-red-500 to-rose-700',
+      initials: '📦',
+    },
+    stream: {
+      id: 'stream',
+      name: 'StreamBox',
+      avatar: 'from-violet-500 to-purple-700',
+      initials: '▶',
+    },
+    scam: {
+      id: 'scam',
+      name: '+1 (829) 555-0142',
+      avatar: 'from-zinc-600 to-zinc-800',
+      initials: '!',
+    },
   },
 
   // ------------------------------------------------------------------ threads
@@ -184,7 +224,10 @@ export const caseData: CaseData = {
         { id: 'p2', from: 'me', text: 'she needed space. she went away for a bit. she’s fine', ts: '2026-06-08T11:40', act: 1 },
         { id: 'p3', from: 'paige', text: 'away WHERE. she would never not text me back', ts: '2026-06-08T11:42', act: 1 },
         { id: 'p4', from: 'paige', text: 'she texted me Sunday saying she needs a break from everyone. that’s not how she talks', ts: '2026-06-08T11:50', act: 2 },
+        { id: 'p4b', from: 'paige', text: 'was she seeing someone else?? was it Luke? if she ran off with him just TELL me, i won’t be angry, i just need to know she’s ok', ts: '2026-06-08T12:30', act: 2 },
+        { id: 'p4c', from: 'paige', text: 'the bank flagged her card. someone used it at a cashpoint in Manchester on Sunday. so she IS out there. she got away from you', ts: '2026-06-09T13:00', act: 3 },
         { id: 'p5', from: 'paige', text: 'she told me last week she was scared of you. did you know that', ts: '2026-06-09T20:10', act: 3 },
+        { id: 'p5b', from: 'paige', text: 'Manchester police checked the cashpoint footage. it wasn’t her. it was a man in a cap. it was YOU. why do you have her card', ts: '2026-06-10T22:00', act: 4 },
         { id: 'p6', from: 'me', text: 'careful Paige', ts: '2026-06-09T20:12', act: 3 },
         { id: 'p7', from: 'paige', text: 'i went to the police. DS Salter has your number', ts: '2026-06-10T14:00', act: 4 },
         { id: 'p8', from: 'paige', text: 'where were you Saturday night Adam. tell me where the cabin is', ts: '2026-06-10T14:01', act: 4 },
@@ -214,12 +257,24 @@ export const caseData: CaseData = {
       arc: 'B',
       messages: [
         // This whole thread is between Adam and Luke; the "affair" idea comes
-        // from screenshots Adam planted. Luke barely knows Adam.
-        { id: 'l1', from: 'me', text: 'stay away from Clara', ts: '2026-05-18T23:02', act: 2 },
-        { id: 'l2', from: 'luke', text: 'mate i haven’t seen Clara in years. she messaged ME asking for help', ts: '2026-05-18T23:10', act: 2 },
+        // from screenshots Adam planted. Luke barely knows Adam. On first read
+        // l-screenshot + l6/l7 make the affair feel real; l3/l8 quietly undo it.
+        {
+          id: 'l-shot',
+          from: 'me',
+          kind: 'screenshot',
+          media: { caption: 'Screenshot: “Clara → L”  ❤️  “miss you. it was so good to see you x”' },
+          ts: '2026-05-17T22:50',
+          act: 2,
+        },
+        { id: 'l1', from: 'me', text: 'i saw the messages. i know about you and her. stay away from Clara', ts: '2026-05-18T23:02', act: 2 },
+        { id: 'l6', from: 'luke', text: 'you and her?? mate that “x” was about coffee. she came to me ONCE', ts: '2026-05-18T23:08', act: 2 },
+        { id: 'l2', from: 'luke', text: 'i haven’t been with Clara in years. she messaged me asking for HELP', ts: '2026-05-18T23:10', act: 2 },
         { id: 'l3', from: 'luke', text: 'she said she needed somewhere to go. that’s it. she sounded terrified', ts: '2026-05-18T23:11', act: 3 },
         { id: 'l4', from: 'me', text: 'she’s lying. delete the messages', ts: '2026-05-18T23:15', act: 3 },
         { id: 'l5', from: 'luke', text: 'why would i delete them', ts: '2026-05-18T23:16', act: 3 },
+        { id: 'l7', from: 'me', text: 'you took the screenshot out of order. you cropped it.', ts: '2026-05-18T23:18', act: 3, deleted: true },
+        { id: 'l8', from: 'luke', text: 'i didn’t crop anything. YOU sent me that screenshot. it’s your handwriting in the notes app behind it', ts: '2026-05-18T23:20', act: 4, deleted: true },
       ],
     },
 
@@ -366,6 +421,84 @@ export const caseData: CaseData = {
         { id: 'g2', from: 'gym', text: 'We miss you! Your membership renews on the 15th.', ts: '2026-06-12T09:00', act: 4 },
       ],
     },
+
+    // 16) RAY — arc A (gambling debt, feels like the real reason he ran) ---
+    {
+      id: 't-ray',
+      contactId: 'ray',
+      act: 2,
+      arc: 'A',
+      messages: [
+        { id: 'r1', from: 'ray', text: 'good night for you. 2 grand. you’re into me proper now Adam', ts: '2026-05-09T01:40', act: 2 },
+        { id: 'r2', from: 'me', text: 'i’m good for it. friday', ts: '2026-05-09T01:42', act: 2 },
+        { id: 'r3', from: 'ray', text: 'friday came and went pal. don’t make me come to the office. or to the flat. Clara still work from home does she', ts: '2026-05-15T20:10', act: 2 },
+        { id: 'r4', from: 'me', text: 'leave her out of it. you’ll get it', ts: '2026-05-15T20:30', act: 2 },
+        { id: 'r5', from: 'ray', text: 'tick tock', ts: '2026-05-16T09:00', act: 3 },
+        // Collapse (Act 4): the debt was cleared before he "vanished" — not the reason.
+        { id: 'r6', from: 'me', text: 'sent. all 2k + the 250 for the cards. we’re done. lose my number', ts: '2026-06-05T16:00', act: 4 },
+        { id: 'r7', from: 'ray', text: 'received. nice doing business. you never owed me trouble Adam, just money', ts: '2026-06-05T16:05', act: 4 },
+      ],
+    },
+
+    // 17) 5-A-SIDE — filler banter ----------------------------------------
+    {
+      id: 't-fives',
+      contactId: 'fives',
+      isGroup: true,
+      participants: ['jamie', 'tom', 'me'],
+      act: 1,
+      messages: [
+        { id: 'fv1', from: 'jamie', text: 'lads. thursday. who’s in 🟢🔴', ts: '2026-05-28T12:00', act: 1 },
+        { id: 'fv2', from: 'tom', text: 'in. bringing bibs', ts: '2026-05-28T12:05', act: 1 },
+        { id: 'fv3', from: 'me', text: 'in', ts: '2026-05-28T12:30', act: 1 },
+        { id: 'fv4', from: 'jamie', text: 'Adam you owe £3 for the pitch from last time you tight git 😂', ts: '2026-05-28T12:31', act: 1 },
+        { id: 'fv5', from: 'jamie', text: 'adam? you missed thursday. and the one before. everything alright mate?', ts: '2026-06-11T19:00', act: 4 },
+      ],
+    },
+
+    // 18) LANDLORD — filler with a quiet texture beat ---------------------
+    {
+      id: 't-landlord',
+      contactId: 'landlord',
+      act: 2,
+      messages: [
+        { id: 'ld1', from: 'landlord', text: 'Hi Adam, rent for 14 Elder Road is 3 days overdue. Please transfer when you can.', ts: '2026-06-04T10:00', act: 2 },
+        { id: 'ld2', from: 'me', text: 'sorry. sorting it today', ts: '2026-06-04T10:20', act: 2 },
+        { id: 'ld3', from: 'landlord', text: 'No problem. Also — the lady at no.16 said she hasn’t seen Clara in over a week and your bins haven’t gone out. All ok at the flat?', ts: '2026-06-10T11:00', act: 4 },
+      ],
+    },
+
+    // 19) DPD — filler ----------------------------------------------------
+    {
+      id: 't-dpd',
+      contactId: 'dpd',
+      act: 1,
+      messages: [
+        { id: 'dp1', from: 'dpd', text: 'Your parcel will arrive today 12:00–13:00. 1 item: “Heavy-duty tarpaulin 4x5m”.', ts: '2026-06-05T08:00', act: 1 },
+        { id: 'dp2', from: 'dpd', text: 'Delivered and left in porch. Thanks!', ts: '2026-06-05T12:40', act: 1 },
+      ],
+    },
+
+    // 20) STREAMBOX — filler ----------------------------------------------
+    {
+      id: 't-stream',
+      contactId: 'stream',
+      act: 1,
+      messages: [
+        { id: 'st1', from: 'stream', text: '“The Staircase” — new episode is ready. Continue watching? 📺', ts: '2026-05-22T21:00', act: 1 },
+        { id: 'st2', from: 'stream', text: 'Still there? Your show paused 41 minutes ago.', ts: '2026-05-22T22:30', act: 1 },
+      ],
+    },
+
+    // 21) SCAM — filler ---------------------------------------------------
+    {
+      id: 't-scam',
+      contactId: 'scam',
+      act: 1,
+      messages: [
+        { id: 'sc1', from: 'scam', text: 'HMRC FINAL NOTICE: you are owed a tax refund of £318.42. Claim now: hmrc-refund-uk[.]info/claim', ts: '2026-06-01T14:22', act: 1 },
+      ],
+    },
   ],
 
   // ------------------------------------------------------------------- albums
@@ -384,6 +517,17 @@ export const caseData: CaseData = {
         { id: 'ph6', caption: 'gym progress', ts: '2026-05-27T06:40', visual: { bg: 'from-slate-500 to-slate-700', glyph: '💪' } },
         { id: 'ph7', caption: 'the cabin (years ago)', ts: '2024-08-10T14:00', visual: { bg: 'from-green-700 to-emerald-900', glyph: '🌲' }, exif: 'Blackmoor woods' },
         { id: 'ph8', caption: 'screenshot — Clara’s location shared', ts: '2026-06-04T19:00', visual: { bg: 'from-blue-600 to-blue-900', glyph: '📍', glitch: false }, exif: 'He was tracking her.' },
+        // arc A — looks like the "real reason he ran"
+        { id: 'ph-bet', caption: 'screenshot — betting account, -£2,000', ts: '2026-05-09T01:38', visual: { bg: 'from-red-800 to-zinc-900', glyph: '🎰' }, exif: 'A bad night at Ray’s table.', act: 2, arc: 'A' },
+        // arc B — the cropped "affair" screenshot
+        { id: 'ph-shot', caption: 'screenshot — “Clara → L ❤️ miss you x”', ts: '2026-05-17T22:51', visual: { bg: 'from-pink-700 to-zinc-900', glyph: '💬' }, exif: 'Cropped. The reply above it is missing.', act: 2, arc: 'B' },
+        // arc C — escape "evidence" that fuels false hope
+        { id: 'ph-coach', caption: 'screenshot — coach ticket Ashford→Manchester, Sun', ts: '2026-06-06T09:10', visual: { bg: 'from-amber-700 to-zinc-900', glyph: '🎟️' }, exif: 'Booked on HER card. Never scanned at the gate.', act: 3, arc: 'C' },
+        // filler texture
+        { id: 'ph-dog', caption: 'someone’s dog at the park', ts: '2026-05-24T16:00', visual: { bg: 'from-lime-600 to-green-800', glyph: '🐕' } },
+        { id: 'ph-receipt', caption: 'receipt — Hardware Barn', ts: '2026-06-06T11:31', visual: { bg: 'from-zinc-500 to-zinc-700', glyph: '🧾' }, exif: 'tarp, rope, bleach, gloves', act: 4, evidence: true },
+        { id: 'ph-score', caption: 'screenshot — full time 2-1 ⚽', ts: '2026-05-25T16:50', visual: { bg: 'from-green-700 to-emerald-900', glyph: '⚽' } },
+        { id: 'ph-park', caption: 'where I parked', ts: '2026-05-29T09:01', visual: { bg: 'from-slate-600 to-zinc-800', glyph: '🅿️' } },
       ],
     },
     {
@@ -422,17 +566,24 @@ export const caseData: CaseData = {
     { id: 'n-pw', title: 'pw', body: 'wifi: meridian2021\nnetflix: don’t change it again\n*** album: our day. you know the date.', ts: '2026-05-26T09:00', act: 2 },
     { id: 'n-numbers', title: 'numbers', body: 'plumber 0788…\nAce Cabs: 09 31 — “ask for the night driver”\naccountant\nlocksmith', ts: '2026-05-10T10:00', act: 2 },
     { id: 'n-calc', title: 'reminder to self', body: 'the calculator isn’t a calculator.\ntype the night cab’s number, then “=”.\nAce Cabs. 09 31. she doesn’t know it’s there.', ts: '2026-05-25T23:00', act: 3 },
-    { id: 'n-debt', title: 'R. — 250', body: 'R. — 250 (settled)\nHarlow 4k → Tom, paid\nmove the rest before the 8th', ts: '2026-05-22T20:00', act: 2, isRedHerring: true },
+    { id: 'n-debt', title: 'R. — 250', body: 'R. — 250 (settled)\nHarlow 4k → Tom, paid\nRay 2k → Friday (!!)\nmove the rest before the 8th', ts: '2026-05-22T20:00', act: 2, isRedHerring: true, arc: 'A' },
+    { id: 'n-ray', title: 'Ray', body: 'don’t tell Tom about the table.\nRay isn’t the type to wait.\nif it goes bad, the cabin. nobody knows about the cabin.', ts: '2026-05-16T02:00', act: 2, arc: 'A', isRedHerring: true },
     {
       id: 'n-dv',
       title: '[screenshot] C — draft',
       body: 'Hi. I think I need help. My partner controls everything — my phone, my money, who I see. Last week he… I’m scared to write it down in case he reads it. If I disappear, please —\n\n[draft never sent]',
       ts: '2026-05-25T13:35',
       act: 4,
+      arc: 'C',
     },
+    { id: 'n-refuge', title: '[screenshot] C — searches', body: 'her browser, while she slept:\n• women’s refuge near me\n• can you leave without your partner knowing\n• coach tickets Ashford → Manchester (sister?)\nshe thinks I don’t check.', ts: '2026-05-26T02:10', act: 3, arc: 'C', isRedHerring: true },
+    { id: 'n-affair', title: 'L.', body: 'who is L.\nfound “L” in her deleted contacts. recovered it.\nLuke Marsh. the ex.\nshe’s texting the ex behind my back. that’s what this is.', ts: '2026-05-17T23:30', act: 2, arc: 'B', isRedHerring: true },
     { id: 'n-cabin', title: 'cabin checklist', body: 'tarp\nrope\ngloves\ntorch\nbleach\nshovel (shed)\nphone OFF at the mast', ts: '2026-06-05T23:30', act: 4, isRedHerring: false },
     { id: 'n-remember', title: 'things to remember', body: 'i told Paige she went away.\ni told Eve the same.\ni told mum work.\nstory: poker at Tom’s till 2.\nkeep it simple. don’t add details.', ts: '2026-06-08T01:00', act: 4 },
     { id: 'n-watch', title: 'watchlist', body: 'that crime doc everyone’s on about\nthe one with the lighthouse\nClara’s rom-com (ugh, fine)', ts: '2026-05-12T22:00', act: 1, isRedHerring: true },
+    { id: 'n-recipe', title: 'C’s carbonara', body: 'guanciale not bacon (she’ll know)\n2 yolks 1 egg\npecorino\nNO cream adam\nfinish off the heat', ts: '2026-05-03T19:30', act: 1, isRedHerring: true },
+    { id: 'n-parking', title: 'parking', body: 'NCP Riverside\nLevel 3, bay 44\nticket in glovebox', ts: '2026-05-29T09:00', act: 1, isRedHerring: true },
+    { id: 'n-mot', title: 'car', body: 'MOT due 18th — booked, ref MOT-7741\nrear tyre slow puncture\nvalet before? (boot smells)', ts: '2026-06-08T12:00', act: 1, isRedHerring: true },
     { id: 'n-song', title: '—', body: 'and if I go before you wake\nremember it was never me\nremember it was never me', ts: '2026-06-06T03:00', act: 3 },
     { id: 'n-vera', title: 'note to VERA', body: 'VERA — when this is over, wipe yourself too. you’ll have seen too much.\nyou won’t remember writing this down for me.\ngood girl.', ts: '2026-06-13T02:40', act: 5 },
   ],
@@ -474,6 +625,34 @@ export const caseData: CaseData = {
       transcript: [{ t: 'This is an important message about your vehicle’s extended warranty—' }],
     },
     {
+      id: 'vm-ray',
+      title: 'Ray (poker)',
+      fromLabel: 'Ray · voicemail',
+      seconds: 13,
+      ts: '2026-05-16T22:10',
+      act: 2,
+      arc: 'A',
+      transcript: [
+        { t: 'It’s Ray. You’re not answering and that’s a bad look, Adam.' },
+        { t: 'Two grand. I know where you work. I know where she works.' },
+        { t: 'Don’t make this messy. Friday.' },
+      ],
+    },
+    {
+      id: 'vm-eve2',
+      title: 'Eve Dawson',
+      fromLabel: 'Eve · voicemail',
+      seconds: 15,
+      ts: '2026-05-30T22:20',
+      act: 3,
+      arc: 'C',
+      transcript: [
+        { t: 'Clara, it’s me. The spare room’s made up, ok? You just come. Any time, day or night.' },
+        { t: 'You don’t have to tell him. Bring the cat. We’ll figure the rest out.' },
+        { t: 'You are not crazy and this is not your fault. I love you. Come.' },
+      ],
+    },
+    {
       id: 'vm-tom',
       title: 'Tom Hayes',
       fromLabel: 'Tom · voicemail',
@@ -492,6 +671,7 @@ export const caseData: CaseData = {
       seconds: 11,
       ts: '2026-06-07T13:20',
       act: 4,
+      arc: 'C',
       transcript: [
         { t: 'Hi everyone, it’s Clara. I’m… okay.' },
         { t: '[I’m] taking [some] time [for me].', glitch: true },
@@ -544,11 +724,23 @@ export const caseData: CaseData = {
     { id: 'cal-therapy', title: 'Couples counselling', date: '2026-05-19', time: '18:00', act: 2, deleted: true, note: 'C. booked it. A. deleted it.' },
     { id: 'cal-blank', title: '—', date: '2026-06-07', time: '01:30', location: 'Blackmoor quarry', act: 4, note: 'no title. 90 min. created at 01:29.', edited: true },
     { id: 'cal-renew', title: 'Phone insurance renews', date: '2026-06-15', act: 1 },
+    // arc A
+    { id: 'cal-ray', title: 'R. — pay back', date: '2026-06-05', time: '16:00', act: 2, deleted: true, note: 'settled — marked done', arc: 'A' },
+    // arc B
+    { id: 'cal-lunch', title: 'lunch — town', date: '2026-05-16', time: '13:00', act: 2, note: 'no guests listed. "who with?"', arc: 'B' },
+    // filler texture
+    { id: 'cal-fives', title: '5-a-side ⚽', date: '2026-06-04', time: '20:00', act: 1, location: 'Goals Ashford' },
+    { id: 'cal-dentist', title: 'Dentist — checkup', date: '2026-06-16', time: '09:20', act: 1 },
+    { id: 'cal-mot', title: 'Car MOT', date: '2026-06-18', time: '08:30', act: 1, location: 'Riverside Motors' },
+    { id: 'cal-bday', title: 'Mum’s birthday 🎂', date: '2026-06-20', act: 1 },
+    { id: 'cal-bins', title: 'Bins out (recycling)', date: '2026-06-09', time: '07:00', act: 1 },
   ],
 
   // ----------------------------------------------------------------- locations
   locations: [
     { id: 'loc-home', place: 'Home', address: '14 Elder Road, Ashford', ts: '2026-06-06T16:40', act: 2 },
+    { id: 'loc-gym', place: 'FitZone Ashford', address: 'Mill Road, Ashford', ts: '2026-06-03T06:05', act: 2 },
+    { id: 'loc-hardware', place: 'Hardware Barn', address: 'Retail Park, Ashford', ts: '2026-06-06T11:28', note: 'Saturday morning. 11 minutes.', act: 3 },
     { id: 'loc-office', place: 'Meridian Realty', address: 'High St, Ashford', ts: '2026-06-05T17:30', act: 2 },
     { id: 'loc-cabin', place: 'The cabin', address: 'Blackmoor Woods (no street)', ts: '2026-06-06T20:10', note: 'arrived Saturday evening', act: 2, evidence: true },
     { id: 'loc-quarry', place: 'Blackmoor quarry', address: 'unmarked track, Blackmoor', ts: '2026-06-07T01:40', note: 'Sunday, 01:40–03:10. Never been here before.', act: 4, evidence: true },

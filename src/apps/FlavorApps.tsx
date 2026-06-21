@@ -43,6 +43,7 @@ const TX = [
   { id: 'b2', label: 'Bella Pizza', amt: -18.5, ts: '2026-06-05T20:11', act: 1 },
   { id: 'b3', label: 'Transfer to T. Hayes — “Harlow”', amt: -4000, ts: '2026-05-20T22:40', act: 2, flag: 'A' },
   { id: 'b4', label: 'ATM withdrawal', amt: -500, ts: '2026-06-05T18:02', act: 2, flag: 'A' },
+  { id: 'b7', label: 'Transfer to R. Doyle — “cards”', amt: -2250, ts: '2026-06-05T16:00', act: 2, flag: 'A' },
   { id: 'b5', label: 'Transfer to “Savings (new)”', amt: -11500, ts: '2026-06-08T07:14', act: 3, flag: 'T1' },
   { id: 'b6', label: 'Hardware Barn — tarpaulin, rope, bleach', amt: -64.2, ts: '2026-06-06T11:30', act: 4, flag: 'evidence' },
 ]
@@ -81,7 +82,10 @@ export function Bank() {
 const HISTORY = [
   { id: 'h1', q: 'maple drive sold prices', ts: '2026-05-26T14:00', act: 1 },
   { id: 'h2', q: 'romantic cabins to rent blackmoor', ts: '2026-06-02T21:00', act: 2 },
+  { id: 'h8', q: 'what happens if you can’t pay a gambling debt uk', ts: '2026-05-15T23:50', act: 2, dark: true },
+  { id: 'h9', q: 'recover deleted whatsapp messages android', ts: '2026-05-17T22:30', act: 2, dark: true },
   { id: 'h3', q: 'how to track a phone without them knowing', ts: '2026-05-18T23:30', act: 2, dark: true },
+  { id: 'h10', q: 'ashford to manchester coach times sunday', ts: '2026-06-06T09:00', act: 3, dark: true },
   { id: 'h4', q: 'can you delete an icloud backup permanently', ts: '2026-06-07T04:00', act: 3, dark: true },
   { id: 'h5', q: 'blackmoor quarry how deep', ts: '2026-06-06T10:40', act: 4, dark: true },
   { id: 'h6', q: 'how long until a missing person is declared dead', ts: '2026-06-09T02:10', act: 4, dark: true },

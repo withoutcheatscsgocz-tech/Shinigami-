@@ -86,6 +86,28 @@ for (const arc of ['A', 'B', 'C'] as const) {
   check(caseData.threads.some((t) => t.arc === arc), `red herring arc ${arc} present in threads`)
 }
 
+// --- red herring depth: each arc must be substantiated across several pieces
+//     of evidence spanning at least two different app types, so a first-time
+//     player can genuinely commit to a wrong theory before it collapses. -----
+for (const arc of ['A', 'B', 'C'] as const) {
+  const sources: Record<string, number> = {
+    threads: caseData.threads.filter((t) => t.arc === arc).length,
+    notes: caseData.notes.filter((n) => n.arc === arc).length,
+    photos: caseData.albums.flatMap((a) => a.photos).filter((p) => p.arc === arc).length,
+    voicemails: caseData.voicemails.filter((v) => v.arc === arc).length,
+    calendar: caseData.calendar.filter((e) => e.arc === arc).length,
+  }
+  const total = Object.values(sources).reduce((a, b) => a + b, 0)
+  const types = Object.values(sources).filter((n) => n > 0).length
+  check(total >= 4, `arc ${arc}: >=4 pieces of supporting evidence (have ${total})`)
+  check(types >= 2, `arc ${arc}: evidence spans >=2 app types (have ${types})`)
+}
+
+// --- screenshot bubbles must carry media so they render --------------------
+for (const t of caseData.threads)
+  for (const m of t.messages)
+    if (m.kind === 'screenshot') check(!!m.media, `screenshot message ${m.id} must have media`)
+
 // --- defiance + ending wiring ---------------------------------------------
 check(caseData.defiance.length >= 5, `>=5 defiance replies (have ${caseData.defiance.length})`)
 check(caseData.ending.epilogue.length >= 3, 'epilogue has lines')

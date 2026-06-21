@@ -101,6 +101,8 @@ export interface Photo {
   act?: Act
   /** True for the "wrong"/disturbing photo. */
   evidence?: boolean
+  /** Red-herring arc this item helps substantiate, if any. */
+  arc?: 'A' | 'B' | 'C'
 }
 
 export interface Album {
@@ -121,6 +123,8 @@ export interface Note {
   ts: string
   pinned?: boolean
   isRedHerring?: boolean
+  /** Red-herring arc this item helps substantiate, if any. */
+  arc?: 'A' | 'B' | 'C'
   act: Act
 }
 
@@ -137,6 +141,8 @@ export interface VoiceMemo {
   act: Act
   /** True for the murder recording revealed in Act 4. */
   evidence?: boolean
+  /** Red-herring arc this item helps substantiate, if any. */
+  arc?: 'A' | 'B' | 'C'
 }
 
 export interface CalendarEvent {
@@ -149,6 +155,8 @@ export interface CalendarEvent {
   note?: string
   deleted?: boolean
   edited?: boolean
+  /** Red-herring arc this item helps substantiate, if any. */
+  arc?: 'A' | 'B' | 'C'
   act: Act
 }
 
