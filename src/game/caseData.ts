@@ -421,7 +421,7 @@ export const caseData: CaseData = {
     { id: 'n-todo', title: 'To do', body: '- call accountant\n- MOT\n- “fix” cabin lock\n- delete cloud backup??\n- gym', ts: '2026-06-05T11:05', act: 1 },
     { id: 'n-pw', title: 'pw', body: 'wifi: meridian2021\nnetflix: don’t change it again\n*** album: our day. you know the date.', ts: '2026-05-26T09:00', act: 2 },
     { id: 'n-numbers', title: 'numbers', body: 'plumber 0788…\nAce Cabs: 09 31 — “ask for the night driver”\naccountant\nlocksmith', ts: '2026-05-10T10:00', act: 2 },
-    { id: 'n-calc', title: 'reminder to self', body: 'the calculator isn’t a calculator.\nin reverse it’s the cab number.\nshe doesn’t know it’s there.', ts: '2026-05-25T23:00', act: 3 },
+    { id: 'n-calc', title: 'reminder to self', body: 'the calculator isn’t a calculator.\ntype the night cab’s number, then “=”.\nAce Cabs. 09 31. she doesn’t know it’s there.', ts: '2026-05-25T23:00', act: 3 },
     { id: 'n-debt', title: 'R. — 250', body: 'R. — 250 (settled)\nHarlow 4k → Tom, paid\nmove the rest before the 8th', ts: '2026-05-22T20:00', act: 2, isRedHerring: true },
     {
       id: 'n-dv',

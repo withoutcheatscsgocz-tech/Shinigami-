@@ -9,11 +9,51 @@ import { Banners } from './components/Banners'
 import { LockScreen } from './screens/LockScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { Placeholder } from './apps/Placeholder'
+import { Messages } from './apps/Messages'
+import { Photos } from './apps/Photos'
+import { Notes } from './apps/Notes'
+import { Voicemail } from './apps/Voicemail'
+import { Calendar } from './apps/Calendar'
+import { Maps } from './apps/Maps'
+import { Calculator } from './apps/Calculator'
+import { Assistant } from './apps/Assistant'
+import { Settings } from './apps/Settings'
+import { Phone, Bank, Browser, Music, Weather } from './apps/FlavorApps'
 import type { AppId } from './game/types'
 
 function CurrentApp({ id }: { id: AppId }) {
-  // Phase 4 replaces these with real app components.
-  return <Placeholder id={id} />
+  switch (id) {
+    case 'messages':
+      return <Messages />
+    case 'photos':
+      return <Photos />
+    case 'notes':
+      return <Notes />
+    case 'voicemail':
+      return <Voicemail />
+    case 'calendar':
+      return <Calendar />
+    case 'maps':
+      return <Maps />
+    case 'calculator':
+      return <Calculator />
+    case 'assistant':
+      return <Assistant />
+    case 'settings':
+      return <Settings />
+    case 'phone':
+      return <Phone />
+    case 'bank':
+      return <Bank />
+    case 'browser':
+      return <Browser />
+    case 'music':
+      return <Music />
+    case 'weather':
+      return <Weather />
+    default:
+      return <Placeholder id={id} />
+  }
 }
 
 export default function App() {
