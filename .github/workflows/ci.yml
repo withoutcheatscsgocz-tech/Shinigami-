@@ -1,0 +1,33 @@
+name: CI
+
+# Fast PR gate: typecheck + the data-integrity / solvability validation. No
+# Android SDK setup here, so pull-request checks stay quick. The full APK build
+# lives in android-build.yml and only runs on merge to main / on demand.
+on:
+  pull_request:
+    branches: [main]
+  # Allow running the same checks manually if needed.
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # `npm test` = typecheck (tsc -b) + node validate script (325 checks).
+      - name: Typecheck & validate content
+        run: npm test
