@@ -3,11 +3,13 @@
 
 import { useGame } from './game/state'
 import { useShell } from './ui/shell'
+import { useEvents } from './game/useEvents'
 import { StatusBar } from './components/StatusBar'
 import { NavBar } from './components/NavBar'
 import { Banners } from './components/Banners'
 import { LockScreen } from './screens/LockScreen'
 import { HomeScreen } from './screens/HomeScreen'
+import { Ending } from './screens/Ending'
 import { Placeholder } from './apps/Placeholder'
 import { Messages } from './apps/Messages'
 import { Photos } from './apps/Photos'
@@ -59,8 +61,18 @@ function CurrentApp({ id }: { id: AppId }) {
 export default function App() {
   const { state } = useGame()
   const { view } = useShell()
+  useEvents()
 
   const onLock = view === 'lock' || !state.phoneUnlocked
+
+  // The ending is a full takeover — no status bar, no nav, no escaping it.
+  if (state.endingStarted) {
+    return (
+      <div className="phone-shell">
+        <Ending />
+      </div>
+    )
+  }
 
   return (
     <div className="phone-shell flex flex-col">
