@@ -17,6 +17,7 @@ export type AppId =
   | 'calendar'
   | 'maps'
   | 'calculator' // disguised hidden vault
+  | 'files' // locked documents vault (Act 4 sub-arc)
   | 'assistant'
   | 'settings'
   | 'phone'
@@ -96,6 +97,14 @@ export interface Photo {
   caption: string
   ts: string
   visual: PhotoVisual
+  /**
+   * Optional path to a bundled real image (royalty-free, fetched at build time
+   * into public/photos — see scripts/fetch-photos.mjs). When set, the Photos app
+   * renders the real image; otherwise it falls back to the stylised
+   * gradient+glyph in `visual`. Sensitive/abstract shots (evidence, crime-scene,
+   * screenshots) intentionally stay stylised.
+   */
+  img?: string
   /** A clue the player can infer from the photo, surfaced as a caption/EXIF. */
   exif?: string
   act?: Act

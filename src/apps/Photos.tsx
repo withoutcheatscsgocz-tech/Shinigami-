@@ -32,11 +32,15 @@ export function Photos() {
       <AppFrame title={fmtFull(photo.ts)} onBack={() => setPhoto(null)} subtitle={photo.exif}>
         <div className="flex h-full flex-col">
           <div
-            className={`m-3 flex flex-1 items-center justify-center rounded-2xl bg-gradient-to-br ${photo.visual.bg} ${
+            className={`relative m-3 flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${photo.visual.bg} ${
               photo.visual.glitch ? 'animate-glitch' : ''
             }`}
           >
-            <span className="text-[120px] leading-none drop-shadow-lg">{photo.visual.glyph ?? '🖼️'}</span>
+            {photo.img ? (
+              <img src={photo.img} alt={photo.caption} className="h-full w-full object-cover" loading="lazy" />
+            ) : (
+              <span className="text-[120px] leading-none drop-shadow-lg">{photo.visual.glyph ?? '🖼️'}</span>
+            )}
           </div>
           <div className="px-5 pb-6">
             <p className="text-[15px] text-white">{photo.caption}</p>
@@ -64,9 +68,13 @@ export function Photos() {
                 openPhoto(p.id)
                 setPhoto(p)
               }}
-              className={`relative aspect-square bg-gradient-to-br ${p.visual.bg} ${p.visual.glitch ? 'animate-glitch' : ''}`}
+              className={`relative aspect-square overflow-hidden bg-gradient-to-br ${p.visual.bg} ${p.visual.glitch ? 'animate-glitch' : ''}`}
             >
-              <span className="absolute inset-0 flex items-center justify-center text-4xl">{p.visual.glyph ?? '🖼️'}</span>
+              {p.img ? (
+                <img src={p.img} alt={p.caption} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center text-4xl">{p.visual.glyph ?? '🖼️'}</span>
+              )}
               {p.evidence && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500" />}
             </button>
           ))}
@@ -99,7 +107,7 @@ export function Photos() {
         <PasswordModal
           passwordId={askPw.passwordId!}
           title={`“${askPw.name}” is locked`}
-          hint="4 digits · a date that matters to them"
+          hint="4 digits · the day, then the month, of the date that matters to them"
           onSuccess={() => {
             const id = askPw.id
             setAskPw(null)

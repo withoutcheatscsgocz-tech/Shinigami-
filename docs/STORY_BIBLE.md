@@ -52,6 +52,8 @@ player has been helping him cover up the murder of someone else entirely.
 | 7 | **Det. Salter** | police officer | the "official" frame, clues and fog | — |
 | 8 | **Mrs. Connolly** (68) | neighbour | heard something the night of the murder | — |
 | 9 | **Ray Doyle** (50s) | runs the poker table Adam plays | menacing creditor; the "obvious" reason he ran | A |
+| 10 | **Daniel Ferris** | broker, Greenfield Life | sold Adam the £250k policy on Clara; exposes premeditation | D |
+| 11 | **Sofia Reyes** | Clara's coworker (design studio) | Clara's "if I go quiet" promise; insurance tip | B/C |
 | — | flavor contacts | pizza, carrier, gym, 5-a-side ⚽, landlord (Mr Okafor), DPD, StreamBox, scam, work group "Meridian Realty 🏠" | phone realism / lived-in texture | — |
 
 ---
@@ -71,6 +73,7 @@ Dates below are relative; concrete dates live in `caseData.ts`.
 |------|-------|----------------------------|
 | −5 weeks | Adam + Clara "happy couple", anniversary, normal chats | Photos (album "2024"), Messages |
 | −4 weeks | First cracks: Adam checks Clara's phone, jealousy | Messages (Clara↔Eve screenshots), Notes |
+| ≈3 months before | Adam takes out a £250k life policy on Clara (1 March) + asks about "no-body" payouts; later edits her will to himself (arc D seed) | Daniel thread, Files vault |
 | −6 weeks (≈5/9) | Adam loses £2k at Ray Doyle's poker table (arc A seed) | Ray thread, betting screenshot, browser |
 | −3.5 weeks (5/17–18) | Adam crops a chat screenshot to "prove" a Luke affair (arc B seed) | Luke thread, note "L.", photo |
 | −3 weeks | Clara reconnects with ex Luke — seeking help/escape | Messages (Luke), Deleted contacts |
@@ -197,20 +200,60 @@ Each act is locked behind a **gate** (password / event / read X / time).
 - **Truth underneath:** the violence was real; Clara did not get out in time.
   The escape "evidence" is Adam laying a false trail with her card and phone.
 
+### D) Insurance / premeditation (Act 3–4 sub-arc, behind the Files vault) — TRUE
+- **For:** the **Daniel / Greenfield Life** thread (a £250,000 policy on Clara,
+  ×2 for accidental death, beneficiary = Adam, active **1 March**); Adam asking
+  about "no-body" payouts the same day; Clara's chat `cx2–cx4` ("you took out
+  half a million on me"); Sofia's "tell someone he insured me"; the **Files
+  vault** documents (policy, an edited will moving Clara's estate to Adam, the
+  £11,500 sole-account transfer).
+- **Not a red herring — this is real and damning.** Unlike A/B/C, the insurance
+  arc doesn't collapse; it hardens the case: the policy and the will **predate**
+  the murder, proving cold premeditation. It re-contextualises arc A's money
+  trail (the debts weren't why he ran — the payout was why she died).
+- **Gate:** the Files app only appears in Act 4 and is opened by the hardest
+  puzzle in the game (§6a).
+
 ---
 
-## 6. Passwords / locks — ALL derivable from content
+## 6. Passwords / locks — ALL derived, never stated
 
-| Lock | Value | Where the clue is |
-|------|-------|-------------------|
-| Phone lock screen | swipe (Act 1) → later PIN **0901** for the "safe zone" | PIN = anniversary Sept 1; clue: cake photo "Sept 1" + chat |
-| Locked Photos album | **0901** (Sept 1, anniversary) | Messages with Clara "one year 9/1 ❤️", cake photo |
-| Hidden "Calculator" app (PIN) | **0931** | business card in Notes: "cab 09 31 …"; + Clara's note "in reverse" |
-| Recorder/vault folder | inherited from unlocking Calculator | — |
-| Gallery "private" video | **date** from calendar (deleted event "cabin 5/30") | Calendar + Location |
+**Hard rule (enforced by `scripts/validate.ts`):** the literal answer to a lock
+must **never appear verbatim** anywhere a player can read it (no "the code is
+0109"). Every code must be *reasoned out* by combining/interpreting clues. All
+date codes use **DAY then MONTH (DDMM)** — this format is stated in-world (album
+hint + Clara's note) so the player knows how to render a date, but the digits
+are never written.
 
-> Rule: **no brute force.** For every lock there is a findable clue in another
-> app. A wrong password = shake + error tone/vibration.
+| Lock | Value | Solve path (must reason, not read) |
+|------|-------|------------------------------------|
+| **Photos — "Private" album** | **0109** | Anniversary = **1 September**, given only in WORDS: Clara's chat `c9` ("one year today — the first of September") and calendar `cal-ann` ("1 September 2025"). Player renders day-then-month → `01` `09`. The album lock states the DDMM *format*, not the number. |
+| **Calculator — hidden vault** | **3005** | Clara hid the recorder on *Adam's* phone. Hint note `n-claracode` (screenshotted by Adam): *"the code is the day I started keeping proof… day, then month."* Cross-reference what that day is: the bruise photos `pv1/pv2` (Private album) **and** Eve's message `e3` ("I saw the marks on her arm") are all dated **30 May** → `30` `05`. Narrative payoff: reinforces the DV arc (C) and Clara's agency. The handler (`as5`) admits he doesn't have the code and tells VERA to work it out. |
+| **Files — locked "Vault" (Act 4 sub-arc)** | **see §6a** | Added in the length expansion; harder cross-reference puzzle. |
+
+> Rule: **no brute force, no stated answers.** Every lock has a findable clue
+> chain in other apps; a wrong code = shake + error tone/vibration. A wrong
+> guess like the old cab number `09 31` (still flavor in `n-numbers`) now just
+> bounces — it's a red herring, not the answer.
+
+### 6a. Files / "Vault" lock (Act 4) — **0306**, the hardest puzzle
+
+The Files app appears only in **Act 4**. Its code is a **cross-reference of two
+unrelated apps**, neither of which labels its number as part of a code:
+
+- Hint note `n-vault`: *"four digits: the month it began, and the month it
+  ended."*
+- **"It began"** = the insurance policy's commencement, **1 March** → month
+  `03` (Daniel/Greenfield Life thread `gl1`).
+- **"It ended"** = the cabin weekend / the murder, **June** → month `06`
+  (cabin location + the recording date + the calendar).
+- Combine → **03 06**. The format ("month + month") is stated; the digits are
+  never written.
+- **Payoff:** realising the policy (March) came *months before* the murder
+  (June) is the premeditation gut-punch — the puzzle's answer *is* the theme.
+
+No dead ends: every required fact (the March policy date, the June murder) is
+present in at least one always-reachable place by Act 4.
 
 ---
 
@@ -274,6 +317,18 @@ Example bridges:
   inconsistencies.
 - The UI is a realistic phone until it DELIBERATELY starts glitching (Act 3+).
 - Violence: implied, not explicit gore. Dread > shock.
+
+---
+
+## 11b. Content volume (post-expansion — Issue 3)
+
+Floors enforced by `scripts/validate.ts` (current actual in parentheses):
+**≥20 threads (23), ≥90 messages (120), ≥16 notes (19), ≥22 photos (26),
+≥9 voicemails (11)**, plus calendar/locations. Treat these as a floor, not a
+ceiling. Five acts, four arcs (A/B/C debts/affair/DV + D insurance), three
+locks on the critical path-adjacent route (Photos → Calculator → Files), each
+requiring real deduction. Estimated first-play time: **~2–3.5 hours** for a
+player who actually reads and solves unaided (see round notes).
 
 ---
 

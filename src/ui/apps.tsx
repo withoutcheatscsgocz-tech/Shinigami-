@@ -30,8 +30,9 @@ export const APP_META: Record<AppId, AppMeta> = {
   music: { id: 'music', label: 'Music', glyph: '🎵', bg: 'from-pink-400 to-red-500', where: 'grid', order: 5 },
   weather: { id: 'weather', label: 'Weather', glyph: '⛅', bg: 'from-sky-300 to-cyan-500', where: 'grid', order: 6 },
   calculator: { id: 'calculator', label: 'Calculator', glyph: '🧮', bg: 'from-zinc-700 to-zinc-900', where: 'grid', order: 7 },
-  assistant: { id: 'assistant', label: 'Assistant', glyph: '🔵', bg: 'from-cyan-400 to-blue-600', where: 'grid', order: 8 },
-  settings: { id: 'settings', label: 'Settings', glyph: '⚙️', bg: 'from-zinc-400 to-zinc-600', where: 'grid', order: 9 },
+  files: { id: 'files', label: 'Files', glyph: '🗂️', bg: 'from-amber-400 to-orange-600', where: 'grid', order: 8 },
+  assistant: { id: 'assistant', label: 'Assistant', glyph: '🔵', bg: 'from-cyan-400 to-blue-600', where: 'grid', order: 9 },
+  settings: { id: 'settings', label: 'Settings', glyph: '⚙️', bg: 'from-zinc-400 to-zinc-600', where: 'grid', order: 10 },
 }
 
 export const DOCK_APPS = Object.values(APP_META)

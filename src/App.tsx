@@ -12,6 +12,7 @@ import { Recents } from './components/Recents'
 import { LockScreen } from './screens/LockScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { Ending } from './screens/Ending'
+import { RevealBeat } from './screens/RevealBeat'
 import { Placeholder } from './apps/Placeholder'
 import { Messages } from './apps/Messages'
 import { Photos } from './apps/Photos'
@@ -23,6 +24,7 @@ import { Calculator } from './apps/Calculator'
 import { Assistant } from './apps/Assistant'
 import { Settings } from './apps/Settings'
 import { Phone, Bank, Browser, Music, Weather } from './apps/FlavorApps'
+import { Files } from './apps/Files'
 import type { AppId } from './game/types'
 
 function CurrentApp({ id }: { id: AppId }) {
@@ -41,6 +43,8 @@ function CurrentApp({ id }: { id: AppId }) {
       return <Maps />
     case 'calculator':
       return <Calculator />
+    case 'files':
+      return <Files />
     case 'assistant':
       return <Assistant />
     case 'settings':
@@ -61,11 +65,27 @@ function CurrentApp({ id }: { id: AppId }) {
 }
 
 export default function App() {
-  const { state } = useGame()
-  const { view } = useShell()
+  const { state, triggerTwist } = useGame()
+  const { view, goHome } = useShell()
   useEvents()
 
   const onLock = view === 'lock' || !state.phoneUnlocked
+
+  // The point-of-no-return reveal: the instant Act 5 begins (the murder
+  // recording has been played), take over the screen once with the reveal beat.
+  if (state.act >= 5 && !state.endingStarted && !state.triggeredTwists.includes('reveal-beat')) {
+    return (
+      <>
+        <RevealBeat
+          onDone={() => {
+            triggerTwist('reveal-beat')
+            goHome()
+          }}
+        />
+        <BrightnessOverlay />
+      </>
+    )
+  }
 
   // The ending is a full takeover — no status bar, no nav, no escaping it.
   if (state.endingStarted) {

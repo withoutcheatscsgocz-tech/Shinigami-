@@ -44,7 +44,11 @@ export function HomeScreen() {
 
       {/* app grid */}
       <div className="grid grid-cols-4 gap-y-5 px-5 pt-6">
-        {GRID_APPS.map((meta) => (
+        {GRID_APPS
+          // The Files vault only "appears" once the case has cracked open
+          // (Act 4+) — discovered after a milestone, not visible from the start.
+          .filter((meta) => meta.id !== 'files' || state.act >= 4)
+          .map((meta) => (
           <button
             key={meta.id}
             onClick={() => openApp(meta.id)}

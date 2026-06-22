@@ -54,6 +54,39 @@ for (const v of caseData.voicemails) if (v.passwordId) check(pwIds.has(v.passwor
 // --- passwords are 4-digit numeric (matches the keypad) -------------------
 for (const p of caseData.passwords) check(/^\d{4}$/.test(p.value), `password ${p.id} not 4 digits: ${p.value}`)
 
+// --- ANTI-"relocated answer" guard (Issue 2): the literal answer to any lock
+//     must NEVER appear verbatim in player-facing text. The player has to
+//     derive every code, not read it. Checks the raw 4 digits plus the obvious
+//     DD?MM punctuation variants. -----------------------------------------
+const playerText: string[] = [
+  ...caseData.threads.flatMap((t) => t.messages.flatMap((m) => [m.text ?? '', m.media?.caption ?? '', m.voice?.transcript ?? ''])),
+  ...caseData.notes.flatMap((n) => [n.title, n.body]),
+  ...caseData.albums.flatMap((a) => a.photos.flatMap((p) => [p.caption, p.exif ?? ''])),
+  ...caseData.voicemails.flatMap((v) => [v.title, v.fromLabel, ...v.transcript.map((l) => l.t)]),
+  ...caseData.calendar.flatMap((e) => [e.title, e.note ?? '', e.location ?? '']),
+  ...caseData.locations.flatMap((l) => [l.place, l.address, l.note ?? '']),
+  ...caseData.assistantTasks.flatMap((a) => [a.text, a.done ?? '']),
+  ...caseData.ending.epilogue,
+  caseData.ending.command,
+  caseData.ending.insist,
+]
+const corpus = playerText.join('\n')
+// Only the codes actually in use (referenced by a lock) matter.
+const usedPw = new Set<string>()
+for (const a of caseData.albums) if (a.passwordId) usedPw.add(a.passwordId)
+for (const v of caseData.voicemails) if (v.passwordId) usedPw.add(v.passwordId)
+usedPw.add('calc') // the hidden calculator vault reads this directly
+usedPw.add('vault') // the Files documents vault reads this directly
+for (const p of caseData.passwords) {
+  if (!usedPw.has(p.id)) continue
+  const dd = p.value.slice(0, 2)
+  const mm = p.value.slice(2, 4)
+  const variants = [p.value, `${dd} ${mm}`, `${dd}/${mm}`, `${dd}.${mm}`, `${mm}/${dd}`]
+  for (const variant of variants) {
+    check(!corpus.includes(variant), `lock "${p.id}": answer variant "${variant}" appears verbatim in player-facing text`)
+  }
+}
+
 // --- the critical path is reachable: each gate's content appears no later
 //     than the act that needs it -------------------------------------------
 // Act 1 -> read Clara thread
@@ -67,25 +100,37 @@ check(!!priv && priv.act <= 2, 'Act 2 gate: Private album visible by Act 2')
 const cake = caseData.albums.flatMap((a) => a.photos).find((p) => p.id === 'ph5')
 check(!!cake && (cake.act ?? 1) <= 2, 'photos password clue (cake 09/01) available by Act 2')
 
-// Act 3 -> open calculator vault (PIN clue available by Act 3)
-const calcNote = caseData.notes.find((n) => n.id === 'n-calc')
-check(!!calcNote && calcNote.act <= 3, 'calc PIN clue note visible by Act 3')
-const numbers = caseData.notes.find((n) => n.id === 'n-numbers')
-check(!!numbers && numbers.act <= 3, 'cab number note visible by Act 3')
+// Act 3 -> open calculator vault. The code (30 May, DDMM) is derived from
+// Clara's hint note + the dated DV evidence; confirm those pieces exist & are
+// reachable by the time the vault matters (Act 3).
+const calcHint = caseData.notes.find((n) => n.id === 'n-claracode')
+check(!!calcHint && calcHint.act <= 3, 'calc hint note (n-claracode) visible by Act 3')
+// the cross-reference: 30 May must appear as dated evidence the player can see
+const may30 = '2026-05-30'
+const eveMarks = caseData.threads.find((t) => t.id === 't-eve')?.messages.find((m) => m.id === 'e3')
+check(!!eveMarks && eveMarks.ts.startsWith(may30) && (eveMarks.act ?? 1) <= 3, 'Eve “marks” message dated 30 May reachable by Act 3')
+const bruise = caseData.albums.flatMap((a) => a.photos).find((p) => p.id === 'pv1')
+check(!!bruise && bruise.ts.startsWith(may30), 'bruise photo dated 30 May exists (corroborates the code)')
 
 // Act 4 -> play the evidence recording
 const evidence = caseData.voicemails.find((v) => v.id === 'vm-evidence')
 check(!!evidence && evidence.locked === true && evidence.act <= 4, 'evidence recording locked + visible by Act 4')
 check(!!evidence && evidence.passwordId === 'calc', 'evidence recording gated by calc vault')
 
-// --- content volume meets the design minimums (bible §4) ------------------
+// Act 4 sub-arc -> Files "Vault" puzzle (0306). Confirm the derivation pieces:
+const vaultHint = caseData.notes.find((n) => n.id === 'n-vault')
+check(!!vaultHint && vaultHint.act <= 4, 'Files vault hint note (n-vault) visible by Act 4')
+const gl1 = caseData.threads.find((t) => t.id === 't-daniel')?.messages.find((m) => m.id === 'gl1')
+check(!!gl1 && gl1.ts.startsWith('2026-03'), 'insurance policy “began” date (March) exists for the vault cross-reference')
+
+// --- content volume (bible §4 floors, post-expansion — Issue 3) -----------
 const totalMessages = caseData.threads.reduce((n, t) => n + t.messages.length, 0)
-check(caseData.threads.length >= 15, `>=15 threads (have ${caseData.threads.length})`)
-check(totalMessages >= 15, `>=15 messages (have ${totalMessages})`)
-check(caseData.notes.length >= 10, `>=10 notes (have ${caseData.notes.length})`)
+check(caseData.threads.length >= 20, `>=20 threads (have ${caseData.threads.length})`)
+check(totalMessages >= 90, `>=90 messages (have ${totalMessages})`)
+check(caseData.notes.length >= 16, `>=16 notes (have ${caseData.notes.length})`)
 const totalPhotos = caseData.albums.reduce((n, a) => n + a.photos.length, 0)
-check(totalPhotos >= 15, `>=15 photos (have ${totalPhotos})`)
-check(caseData.voicemails.length >= 5, `>=5 voicemails (have ${caseData.voicemails.length})`)
+check(totalPhotos >= 22, `>=22 photos (have ${totalPhotos})`)
+check(caseData.voicemails.length >= 9, `>=9 voicemails (have ${caseData.voicemails.length})`)
 
 // --- red herring arcs A/B/C all present -----------------------------------
 for (const arc of ['A', 'B', 'C'] as const) {

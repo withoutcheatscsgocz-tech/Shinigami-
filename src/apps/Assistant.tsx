@@ -53,22 +53,43 @@ export function Assistant() {
             </div>
           </div>
 
-          {tasks.map((task) => (
-            <div key={task.id} className="space-y-2">
-              {/* handler instruction (left) */}
-              <div className="flex justify-start">
-                <div className="max-w-[82%] rounded-2xl rounded-bl-md bg-zinc-800 px-3.5 py-2 text-[15px] leading-snug text-white">
-                  {task.text}
+          {tasks.map((task, i) => {
+            // Mark where the handler drops the "case" pretense (first Act 5 line).
+            const prev = tasks[i - 1]
+            const next = tasks[i + 1]
+            const shift = task.act === 5 && (!prev || prev.act < 5)
+            // One VERA reply per act group (on the last instruction of that act).
+            const showAck = !next || next.act !== task.act
+            return (
+              <div key={task.id} className="space-y-2">
+                {shift && (
+                  <div className="my-3 flex items-center gap-2 text-[11px] uppercase tracking-widest text-red-500/70">
+                    <span className="h-px flex-1 bg-red-500/30" />
+                    the line changes
+                    <span className="h-px flex-1 bg-red-500/30" />
+                  </div>
+                )}
+                {/* handler instruction (left) */}
+                <div className="flex justify-start">
+                  <div
+                    className={`max-w-[82%] rounded-2xl rounded-bl-md px-3.5 py-2 text-[15px] leading-snug text-white ${
+                      task.act === 5 ? 'border border-red-500/40 bg-red-950/40' : 'bg-zinc-800'
+                    }`}
+                  >
+                    {task.text}
+                  </div>
                 </div>
+                {/* VERA acknowledgement (right) — hollow/compliant after the reveal */}
+                {showAck && (
+                  <div className="flex justify-end">
+                    <div className="max-w-[82%] rounded-2xl rounded-br-md bg-cyan-700/80 px-3.5 py-2 text-[15px] leading-snug text-white">
+                      {ACKS[task.act]}
+                    </div>
+                  </div>
+                )}
               </div>
-              {/* VERA acknowledgement (right) */}
-              <div className="flex justify-end">
-                <div className="max-w-[82%] rounded-2xl rounded-br-md bg-cyan-700/80 px-3.5 py-2 text-[15px] leading-snug text-white">
-                  {ACKS[task.act]}
-                </div>
-              </div>
-            </div>
-          ))}
+            )
+          })}
 
           {reply && (
             <div className="flex justify-end">

@@ -149,8 +149,9 @@ function Vault() {
     <AppFrame title="Recorder" subtitle="Hidden · 1 item">
       <div className="px-4 py-3">
         <div className="mb-4 rounded-xl bg-amber-500/10 p-3 text-[12px] text-amber-300/90">
-          This isn’t Adam’s. It’s a recorder Clara installed in secret, disguised as
-          a calculator. She was gathering proof.
+          This isn’t Adam’s. It’s a recorder Clara hid on <em>his</em> phone — the
+          one place he’d never check, because he only ever searched hers. She was
+          gathering proof.
         </div>
         <ul className="divide-y divide-white/5">
           {memos.map((v) => {

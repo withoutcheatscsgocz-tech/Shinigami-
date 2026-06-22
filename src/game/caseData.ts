@@ -176,6 +176,22 @@ export const caseData: CaseData = {
       avatar: 'from-zinc-600 to-zinc-800',
       initials: '!',
     },
+    daniel: {
+      id: 'daniel',
+      name: 'Daniel — Greenfield Life',
+      avatar: 'from-emerald-600 to-green-800',
+      initials: 'GL',
+      number: '+44 7700 900133',
+      lastActive: 'last seen 4 days ago',
+    },
+    sofia: {
+      id: 'sofia',
+      name: 'Sofia (Clara’s work)',
+      avatar: 'from-rose-500 to-fuchsia-700',
+      initials: 'S',
+      number: '+44 7700 900299',
+      lastActive: 'last seen yesterday',
+    },
   },
 
   // ------------------------------------------------------------------ threads
@@ -195,10 +211,14 @@ export const caseData: CaseData = {
         { id: 'c6', from: 'me', text: 'show me', ts: '2026-05-11T19:03', act: 1 },
         { id: 'c7', from: 'clara', text: 'why do you need to see my phone every day', ts: '2026-05-11T19:20', act: 2 },
         { id: 'c8', from: 'me', text: 'because you make me', ts: '2026-05-11T19:22', act: 2 },
-        { id: 'c9', from: 'clara', text: 'happy 1 year btw. 09/01. you forgot 💔', ts: '2026-05-18T21:40', act: 2 },
+        { id: 'c9', from: 'clara', text: 'our anniversary’s coming up btw — the first of September, one year 🙄 last time you forgot. don’t 💔', ts: '2026-05-18T21:40', act: 2 },
         { id: 'c10', from: 'me', text: 'i didn’t forget. don’t be dramatic', ts: '2026-05-18T22:05', act: 2 },
         { id: 'c11', from: 'clara', text: 'i found the photos album you locked. why is it locked adam', ts: '2026-05-25T13:10', act: 2 },
         { id: 'c12', from: 'me', text: 'leave my phone alone', ts: '2026-05-25T13:12', act: 2 },
+        { id: 'cx1', from: 'clara', text: 'you went through my search history again. all i looked up was “is this normal in a relationship”. read into that what you want', ts: '2026-05-26T08:30', act: 2 },
+        { id: 'cx2', from: 'clara', text: 'and why is there a Greenfield Life letter addressed to me that you opened? since when do we have life insurance', ts: '2026-05-27T19:10', act: 3 },
+        { id: 'cx3', from: 'me', text: 'it’s just sensible. for both of us. stop being paranoid', ts: '2026-05-27T19:14', act: 3 },
+        { id: 'cx4', from: 'clara', text: 'paranoid. right. you took out half a million on me and i’m paranoid', ts: '2026-05-27T19:20', act: 3 },
         { id: 'c13', from: 'clara', text: 'please stop. i can’t breathe in this flat anymore', ts: '2026-05-28T23:51', act: 3 },
         { id: 'c14', from: 'clara', text: 'i’m staying at Eve’s for a few days', ts: '2026-05-29T07:30', act: 3 },
         { id: 'c15', from: 'me', text: 'no you’re not', ts: '2026-05-29T07:31', act: 3 },
@@ -231,6 +251,8 @@ export const caseData: CaseData = {
         { id: 'p6', from: 'me', text: 'careful Paige', ts: '2026-06-09T20:12', act: 3 },
         { id: 'p7', from: 'paige', text: 'i went to the police. DS Salter has your number', ts: '2026-06-10T14:00', act: 4 },
         { id: 'p8', from: 'paige', text: 'where were you Saturday night Adam. tell me where the cabin is', ts: '2026-06-10T14:01', act: 4 },
+        { id: 'p9', from: 'paige', text: 'she told me you’d insured her. half a million. she laughed about it so she wouldn’t cry. i didn’t laugh. i wrote it down.', ts: '2026-06-11T08:00', act: 4 },
+        { id: 'p10', from: 'paige', text: 'i’m not going away. i’ll knock on every door in Blackmoor if i have to. she has a sister. remember that.', ts: '2026-06-12T21:00', act: 4 },
       ],
     },
 
@@ -246,6 +268,7 @@ export const caseData: CaseData = {
         { id: 'e3', from: 'eve', text: 'i saw the marks on her arm Adam. don’t', ts: '2026-05-30T22:14', act: 3, deleted: true },
         { id: 'e4', from: 'eve', text: 'if anything happens to her i will tell them everything', ts: '2026-05-30T22:16', act: 4, deleted: true },
         { id: 'e5', from: 'eve', text: 'she texted me Sunday “taking time for me, don’t worry”. Clara has never once said “don’t worry” in her life. what did you do', ts: '2026-06-08T19:40', act: 4 },
+        { id: 'e6', from: 'eve', text: 'she left a bag at mine “just in case”. there’s a phone charger, her passport, and a note that says “if you’re reading this it’s because i couldn’t”. i gave it to the police today.', ts: '2026-06-11T18:00', act: 4, deleted: true },
       ],
     },
 
@@ -499,6 +522,36 @@ export const caseData: CaseData = {
         { id: 'sc1', from: 'scam', text: 'HMRC FINAL NOTICE: you are owed a tax refund of £318.42. Claim now: hmrc-refund-uk[.]info/claim', ts: '2026-06-01T14:22', act: 1 },
       ],
     },
+
+    // 22) DANIEL / GREENFIELD LIFE — arc D (insurance / premeditation) ----
+    // Unlocks the new "Files" sub-arc. On first read it looks like dull admin;
+    // the dates are the point.
+    {
+      id: 't-daniel',
+      contactId: 'daniel',
+      act: 3,
+      messages: [
+        { id: 'gl1', from: 'daniel', text: 'Hi Adam — confirming the joint life policy is active as of 1 March. Cover £250,000 each. Welcome to Greenfield Life.', ts: '2026-03-01T10:00', act: 3 },
+        { id: 'gl2', from: 'daniel', text: 'Just so you’re aware: the accidental-death benefit doubles the payout to £500,000. Beneficiary on Clara’s policy is listed as you.', ts: '2026-03-01T10:02', act: 3 },
+        { id: 'gl3', from: 'me', text: 'good. and it pays out even if there’s no… if she’s just not found?', ts: '2026-03-01T10:30', act: 3 },
+        { id: 'gl4', from: 'daniel', text: 'After a person is declared missing for 7 years, yes — or sooner with a coroner’s finding. Odd question, but no judgement here!', ts: '2026-03-01T10:35', act: 4 },
+        { id: 'gl5', from: 'daniel', text: 'Adam, the police contacted us about Clara’s policy. Please call. This is a claims-sensitive matter now.', ts: '2026-06-11T15:00', act: 4 },
+      ],
+    },
+
+    // 23) SOFIA — Clara's coworker; intersects arcs B & C ------------------
+    {
+      id: 't-sofia',
+      contactId: 'sofia',
+      act: 2,
+      arc: 'C',
+      messages: [
+        { id: 'sf1', from: 'sofia', text: 'Adam hi — Clara didn’t come into the studio Monday and isn’t answering. She had the Harlow pitch. Is she ok?', ts: '2026-06-08T09:30', act: 2 },
+        { id: 'sf2', from: 'me', text: 'she’s taking some leave. personal stuff. she’ll email HR', ts: '2026-06-08T10:00', act: 2 },
+        { id: 'sf3', from: 'sofia', text: 'she’d never miss Harlow. and she told me weeks ago if she ever “went quiet” it wouldn’t be by choice. she made me promise to say that to someone.', ts: '2026-06-09T12:00', act: 3 },
+        { id: 'sf4', from: 'sofia', text: 'she also said you’d started asking about her life insurance. she thought that was weird. I thought you should know I remember that.', ts: '2026-06-10T20:00', act: 4 },
+      ],
+    },
   ],
 
   // ------------------------------------------------------------------- albums
@@ -509,13 +562,13 @@ export const caseData: CaseData = {
       cover: { bg: 'from-sky-700 to-indigo-900', glyph: '🌇' },
       act: 1,
       photos: [
-        { id: 'ph1', caption: 'Sunset from the balcony', ts: '2026-05-04T20:31', visual: { bg: 'from-orange-500 to-pink-700', glyph: '🌇' }, exif: 'Ashford, home' },
-        { id: 'ph2', caption: 'Maple Drive listing', ts: '2026-05-26T15:02', visual: { bg: 'from-emerald-500 to-teal-700', glyph: '🏠' }, exif: 'work' },
-        { id: 'ph3', caption: 'C made pasta 🍝', ts: '2026-05-04T20:55', visual: { bg: 'from-amber-500 to-red-700', glyph: '🍝' } },
+        { id: 'ph1', caption: 'Sunset from the balcony', ts: '2026-05-04T20:31', img: 'photos/ph1.jpg', visual: { bg: 'from-orange-500 to-pink-700', glyph: '🌇' }, exif: 'Ashford, home' },
+        { id: 'ph2', caption: 'Maple Drive listing', ts: '2026-05-26T15:02', img: 'photos/ph2.jpg', visual: { bg: 'from-emerald-500 to-teal-700', glyph: '🏠' }, exif: 'work' },
+        { id: 'ph3', caption: 'C made pasta 🍝', ts: '2026-05-04T20:55', img: 'photos/ph3.jpg', visual: { bg: 'from-amber-500 to-red-700', glyph: '🍝' } },
         { id: 'ph4', caption: 'meme lol', ts: '2026-05-21T12:10', visual: { bg: 'from-zinc-500 to-zinc-700', glyph: '😂' } },
-        { id: 'ph5', caption: 'anniversary cake — “1 YEAR 09/01”', ts: '2025-09-01T19:00', visual: { bg: 'from-pink-400 to-rose-600', glyph: '🎂' }, exif: 'The clue: 09/01' },
-        { id: 'ph6', caption: 'gym progress', ts: '2026-05-27T06:40', visual: { bg: 'from-slate-500 to-slate-700', glyph: '💪' } },
-        { id: 'ph7', caption: 'the cabin (years ago)', ts: '2024-08-10T14:00', visual: { bg: 'from-green-700 to-emerald-900', glyph: '🌲' }, exif: 'Blackmoor woods' },
+        { id: 'ph5', caption: 'anniversary cake — “ONE YEAR ❤️”', ts: '2025-09-01T19:00', img: 'photos/ph5.jpg', visual: { bg: 'from-pink-400 to-rose-600', glyph: '🎂' }, exif: 'Their anniversary dinner.' },
+        { id: 'ph6', caption: 'gym progress', ts: '2026-05-27T06:40', img: 'photos/ph6.jpg', visual: { bg: 'from-slate-500 to-slate-700', glyph: '💪' } },
+        { id: 'ph7', caption: 'the cabin', ts: '2024-08-10T14:00', img: 'photos/ph7.jpg', visual: { bg: 'from-green-700 to-emerald-900', glyph: '🌲' }, exif: 'Blackmoor woods' },
         { id: 'ph8', caption: 'screenshot — Clara’s location shared', ts: '2026-06-04T19:00', visual: { bg: 'from-blue-600 to-blue-900', glyph: '📍', glitch: false }, exif: 'He was tracking her.' },
         // arc A — looks like the "real reason he ran"
         { id: 'ph-bet', caption: 'screenshot — betting account, -£2,000', ts: '2026-05-09T01:38', visual: { bg: 'from-red-800 to-zinc-900', glyph: '🎰' }, exif: 'A bad night at Ray’s table.', act: 2, arc: 'A' },
@@ -524,10 +577,12 @@ export const caseData: CaseData = {
         // arc C — escape "evidence" that fuels false hope
         { id: 'ph-coach', caption: 'screenshot — coach ticket Ashford→Manchester, Sun', ts: '2026-06-06T09:10', visual: { bg: 'from-amber-700 to-zinc-900', glyph: '🎟️' }, exif: 'Booked on HER card. Never scanned at the gate.', act: 3, arc: 'C' },
         // filler texture
-        { id: 'ph-dog', caption: 'someone’s dog at the park', ts: '2026-05-24T16:00', visual: { bg: 'from-lime-600 to-green-800', glyph: '🐕' } },
+        { id: 'ph-dog', caption: 'next door’s dog 🐶', ts: '2026-05-24T16:00', img: 'photos/ph-dog.jpg', visual: { bg: 'from-lime-600 to-green-800', glyph: '🐕' } },
         { id: 'ph-receipt', caption: 'receipt — Hardware Barn', ts: '2026-06-06T11:31', visual: { bg: 'from-zinc-500 to-zinc-700', glyph: '🧾' }, exif: 'tarp, rope, bleach, gloves', act: 4, evidence: true },
         { id: 'ph-score', caption: 'screenshot — full time 2-1 ⚽', ts: '2026-05-25T16:50', visual: { bg: 'from-green-700 to-emerald-900', glyph: '⚽' } },
         { id: 'ph-park', caption: 'where I parked', ts: '2026-05-29T09:01', visual: { bg: 'from-slate-600 to-zinc-800', glyph: '🅿️' } },
+        { id: 'ph-letter', caption: 'screenshot — Greenfield Life letter', ts: '2026-05-27T19:05', visual: { bg: 'from-emerald-800 to-zinc-900', glyph: '✉️' }, exif: 'Addressed to Clara. Opened by him.', act: 3, arc: 'A' },
+        { id: 'ph-studio', caption: 'Clara’s desk at the studio (Sofia sent it)', ts: '2026-05-20T13:00', img: 'photos/ph-studio.jpg', visual: { bg: 'from-fuchsia-600 to-rose-800', glyph: '🎨' } },
       ],
     },
     {
@@ -565,7 +620,7 @@ export const caseData: CaseData = {
     { id: 'n-todo', title: 'To do', body: '- call accountant\n- MOT\n- “fix” cabin lock\n- delete cloud backup??\n- gym', ts: '2026-06-05T11:05', act: 1 },
     { id: 'n-pw', title: 'pw', body: 'wifi: meridian2021\nnetflix: don’t change it again\n*** album: our day. you know the date.', ts: '2026-05-26T09:00', act: 2 },
     { id: 'n-numbers', title: 'numbers', body: 'plumber 0788…\nAce Cabs: 09 31 — “ask for the night driver”\naccountant\nlocksmith', ts: '2026-05-10T10:00', act: 2 },
-    { id: 'n-calc', title: 'reminder to self', body: 'the calculator isn’t a calculator.\ntype the night cab’s number, then “=”.\nAce Cabs. 09 31. she doesn’t know it’s there.', ts: '2026-05-25T23:00', act: 3 },
+    { id: 'n-claracode', title: '[screenshot] C — note to self', body: 'if anyone ever needs the truth, it’s behind the calculator on his phone. he’d never look in his own.\nthe code is the day I started keeping proof of what he does to me.\nyou don’t forget a day like that.\n(day, then month.)', ts: '2026-05-30T23:50', act: 3, arc: 'C' },
     { id: 'n-debt', title: 'R. — 250', body: 'R. — 250 (settled)\nHarlow 4k → Tom, paid\nRay 2k → Friday (!!)\nmove the rest before the 8th', ts: '2026-05-22T20:00', act: 2, isRedHerring: true, arc: 'A' },
     { id: 'n-ray', title: 'Ray', body: 'don’t tell Tom about the table.\nRay isn’t the type to wait.\nif it goes bad, the cabin. nobody knows about the cabin.', ts: '2026-05-16T02:00', act: 2, arc: 'A', isRedHerring: true },
     {
@@ -579,6 +634,7 @@ export const caseData: CaseData = {
     { id: 'n-refuge', title: '[screenshot] C — searches', body: 'her browser, while she slept:\n• women’s refuge near me\n• can you leave without your partner knowing\n• coach tickets Ashford → Manchester (sister?)\nshe thinks I don’t check.', ts: '2026-05-26T02:10', act: 3, arc: 'C', isRedHerring: true },
     { id: 'n-affair', title: 'L.', body: 'who is L.\nfound “L” in her deleted contacts. recovered it.\nLuke Marsh. the ex.\nshe’s texting the ex behind my back. that’s what this is.', ts: '2026-05-17T23:30', act: 2, arc: 'B', isRedHerring: true },
     { id: 'n-cabin', title: 'cabin checklist', body: 'tarp\nrope\ngloves\ntorch\nbleach\nshovel (shed)\nphone OFF at the mast', ts: '2026-06-05T23:30', act: 4, isRedHerring: false },
+    { id: 'n-vault', title: 'Files — lock', body: 'documents app code.\nfour digits: the month it began, and the month it ended.\n(the policy. and the weekend.)\nnobody connects two dates. they should.', ts: '2026-06-08T02:00', act: 4, arc: 'A' },
     { id: 'n-remember', title: 'things to remember', body: 'i told Paige she went away.\ni told Eve the same.\ni told mum work.\nstory: poker at Tom’s till 2.\nkeep it simple. don’t add details.', ts: '2026-06-08T01:00', act: 4 },
     { id: 'n-watch', title: 'watchlist', body: 'that crime doc everyone’s on about\nthe one with the lighthouse\nClara’s rom-com (ugh, fine)', ts: '2026-05-12T22:00', act: 1, isRedHerring: true },
     { id: 'n-recipe', title: 'C’s carbonara', body: 'guanciale not bacon (she’ll know)\n2 yolks 1 egg\npecorino\nNO cream adam\nfinish off the heat', ts: '2026-05-03T19:30', act: 1, isRedHerring: true },
@@ -653,6 +709,32 @@ export const caseData: CaseData = {
       ],
     },
     {
+      id: 'vm-sofia',
+      title: 'Sofia (Clara’s work)',
+      fromLabel: 'Sofia · voicemail',
+      seconds: 17,
+      ts: '2026-06-09T12:05',
+      act: 3,
+      arc: 'C',
+      transcript: [
+        { t: 'Adam, it’s Sofia from the studio. Clara made me promise something weeks ago and I keep thinking about it.' },
+        { t: 'She said: “if I ever go quiet, it won’t be because I chose to. Tell someone he insured me.”' },
+        { t: 'I didn’t understand it then. I think I do now. I’ve told the police.' },
+      ],
+    },
+    {
+      id: 'vm-daniel',
+      title: 'Daniel — Greenfield Life',
+      fromLabel: 'Greenfield Life · voicemail',
+      seconds: 13,
+      ts: '2026-06-11T15:05',
+      act: 4,
+      transcript: [
+        { t: 'Mr Vance, Daniel at Greenfield Life. The police have asked about the policy on Clara.' },
+        { t: 'You took the accidental-death option in March and asked about no-body payouts the same day. I have to disclose that. Call us.' },
+      ],
+    },
+    {
       id: 'vm-tom',
       title: 'Tom Hayes',
       fromLabel: 'Tom · voicemail',
@@ -718,7 +800,7 @@ export const caseData: CaseData = {
   calendar: [
     { id: 'cal-gym', title: 'Spin class', date: '2026-06-03', time: '06:00', act: 1, location: 'FitZone' },
     { id: 'cal-view', title: 'Viewing — Maple Drive', date: '2026-05-26', time: '15:00', act: 1, location: 'Maple Dr' },
-    { id: 'cal-ann', title: 'Anniversary dinner ❤️', date: '2025-09-01', time: '19:00', act: 1, note: '09/01 — one year' },
+    { id: 'cal-ann', title: 'Anniversary dinner ❤️', date: '2025-09-01', time: '19:00', act: 1, note: 'one year together ❤️' },
     { id: 'cal-mum', title: 'Sunday lunch (Mum)', date: '2026-06-07', time: '13:00', act: 1, deleted: true, note: 'cancelled' },
     { id: 'cal-cabin', title: 'Cabin — C.', date: '2026-06-06', time: '17:00', location: 'Blackmoor', act: 2, deleted: true, edited: true, note: 'edited 4 times; original title hidden' },
     { id: 'cal-therapy', title: 'Couples counselling', date: '2026-05-19', time: '18:00', act: 2, deleted: true, note: 'C. booked it. A. deleted it.' },
@@ -753,18 +835,38 @@ export const caseData: CaseData = {
     { id: 'as2', act: 1, text: 'Clara’s his girlfriend. Once you’ve read her thread, open the Photos app — there’ll be a locked album. We’ll need to get into it.', goal: 'read-clara' },
     { id: 'as3', act: 2, text: 'There’s a locked photo album. Find the password and open it. It matters.', goal: 'open-private' },
     { id: 'as4', act: 2, text: 'Someone’s been threatening him about money. Look into it. Could be why he ran.', goal: 'visit-A' },
-    { id: 'as5', act: 3, text: 'The calculator on the home screen isn’t a calculator. Get into it.', goal: 'open-calc' },
+    { id: 'as5', act: 3, text: 'The calculator on his home screen isn’t a calculator. She hid something inside it. Type a four-digit code — day, then month — and press equals. I don’t have the code. Work it out from what she left behind.', goal: 'open-calc' },
     { id: 'as6', act: 3, text: 'There are messages dated after Saturday. After he went missing. Explain that to me.', goal: 'twist-T1' },
     { id: 'as7', act: 4, text: 'Play the recording from Saturday night. I need to know what it caught.', goal: 'play-evidence' },
     { id: 'as8', act: 4, text: 'You’re asking a lot of questions. Stop analysing me and do as I say.', goal: 'twist-T2' },
-    { id: 'as9', act: 5, text: 'You’ve seen enough now. You understand what you are. Good.', goal: 'reveal' },
+    // Act 5 — post-reveal. The pretense of a "case handler" briefing a detective
+    // is gone; these are curt commands to a tool, addressed to VERA by name.
+    { id: 'as9', act: 5, text: 'VERA. Stop talking. You don’t need to understand it. You just need to do what I say. You always have.', goal: 'reveal' },
+    { id: 'as10', act: 5, text: 'Yes — I’m the one you’ve been helping. There was never anyone else on this line. Now finish it.', goal: 'reveal' },
   ],
 
   // ------------------------------------------------------------------- passwords
   passwords: [
-    { id: 'photos', value: '0901', clue: 'Anniversary, Sept 1 (09/01). Cake photo + Clara’s chat “happy 1 year 09/01”.' },
-    { id: 'calc', value: '0931', clue: 'Ace Cabs number 09 31, “in reverse it’s the cab number” note.' },
-    { id: 'video', value: '0606', clue: 'Cabin date 6/6 from calendar/location.' },
+    // Solve paths (player-facing answer never written verbatim anywhere; a
+    // validation check enforces this). All dates use DAY then MONTH (DDMM).
+    {
+      id: 'photos',
+      value: '0109',
+      clue:
+        'Anniversary = 1 September. Found in WORDS only: Clara’s chat c9 (“one year today — the first of September”) + calendar cal-ann (1 September 2025). Player formats day-then-month → 01 09. Album hint states the DDMM format, not the number.',
+    },
+    {
+      id: 'calc',
+      value: '3005',
+      clue:
+        'Clara’s hidden recorder. Hint note n-claracode: “the day I started keeping proof”. Cross-reference: the bruise photos pv1/pv2 (Private album) and Eve’s message e3 (“I saw the marks on her arm”) are all dated 30 May. Player formats day-then-month → 30 05. (as5 + the note both state the DDMM format.)',
+    },
+    {
+      id: 'vault',
+      value: '0306',
+      clue:
+        'Files / "Vault" sub-arc (Act 4). Hint note n-vault: “the month it began and the month it ended”. Cross-reference two UNRELATED apps: Daniel/Greenfield Life thread gl1 says the policy began 1 MARCH (month 03); the cabin weekend / murder is JUNE (month 06) — established via the cabin location/calendar and the recording date. Combine month-began + month-ended → 03 06. Narrative payoff: the policy predates the murder = premeditation.',
+    },
   ],
 
   // -------------------------------------------------------------------- events
@@ -774,6 +876,7 @@ export const caseData: CaseData = {
     { id: 'ev-a2', onAct: 2, app: 'messages', title: 'Paige Bennett', body: 'where IS she, Adam', kind: 'message' },
     { id: 'ev-glitch1', onAct: 3, title: '', body: '', kind: 'glitch' },
     { id: 'ev-backup', onAct: 3, app: 'messages', title: '88100', body: 'Data backup completed: 1,204 photos, 38 voice memos.', kind: 'system' },
+    { id: 'ev-files', onAct: 4, afterMs: 9000, app: 'files', title: 'Files', body: 'A hidden documents folder finished syncing to this phone. It’s locked.', kind: 'system' },
     { id: 'ev-a4', onAct: 4, app: 'maps', title: 'Location', body: 'A new location was added to your history: “Current location”.', kind: 'system' },
     { id: 'ev-glitch2', onAct: 4, title: '', body: '', kind: 'glitch' },
     { id: 'ev-reveal', onAct: 5, title: 'VERA', body: 'I remember now.', kind: 'assistant' },
