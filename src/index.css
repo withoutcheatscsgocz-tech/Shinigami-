@@ -15,14 +15,13 @@
   scrollbar-width: none;
 }
 
-/* The whole game lives inside a portrait "phone" frame. On a real device this
-   fills the screen; in a desktop browser it's centered with a bezel so it still
-   reads as a phone. */
+/* The whole game lives inside a portrait "phone" frame.
+   On a real device (and any phone-sized viewport) the shell fills the screen
+   exactly — no margins, no page scroll. Only on clearly desktop-sized viewports
+   do we draw a centered bezel so it still reads as a phone in a browser. */
 .phone-shell {
   width: 100%;
   height: 100%;
-  max-width: 430px;
-  margin: 0 auto;
   position: relative;
   overflow: hidden;
   background: #000;
@@ -33,10 +32,14 @@
   box-sizing: border-box;
 }
 
-@media (min-width: 480px) {
+/* Desktop/browser preview only — phones (portrait, < 768px wide) never match
+   this, so they always get the true full-screen shell above. */
+@media (min-width: 768px) {
   .phone-shell {
+    width: 430px;
     height: min(100%, 932px);
-    margin-top: max(0px, calc((100vh - 932px) / 2));
+    margin: 0 auto;
+    margin-top: max(0px, calc((100dvh - 932px) / 2));
     border-radius: 44px;
     box-shadow: 0 0 0 12px #1a1a1c, 0 0 0 14px #2c2c2e, 0 40px 80px rgba(0, 0, 0, 0.6);
   }

@@ -274,3 +274,26 @@ Example bridges:
   inconsistencies.
 - The UI is a realistic phone until it DELIBERATELY starts glitching (Act 3+).
 - Violence: implied, not explicit gore. Dread > shock.
+
+---
+
+## 11. REAL device data vs SIMULATED in-game state
+
+The status bar and Settings mix two very different kinds of value. Keep them
+straight:
+
+| Element | Source | Notes |
+|---------|--------|-------|
+| Status-bar **clock** | **REAL** — device time, live (`useDevice.ts`) | The core fourth-wall break. Never fake it. |
+| Status-bar **battery %** + charging | **REAL** — `@capacitor/device` / web Battery API | Falls back to a believable static value only if no source. |
+| Status-bar **WiFi / signal** icons | **SIMULATED** — `deviceSim.tsx` | Reflect the in-game WiFi / Mobile Data toggles. Cosmetic + gate Maps/Browser offline state. |
+| Settings → **Brightness** | **SIMULATED** | Drives a dimming overlay over the app only. Does NOT touch real screen brightness. |
+| Settings → **WiFi / Mobile Data** | **SIMULATED** | Toggles the status-bar icons; both off → "No Service" + Maps/Browser show offline. |
+| Settings → **Haptics** | **SIMULATED** | Gates real vibration calls on/off (when on, vibration still fires for real). |
+
+**Strict rule for the simulated layer (`deviceSim.tsx`):** it lives in ephemeral
+React state only — it is **never persisted** (no Preferences/localStorage) and
+**never calls a real device setting API**, so it fully resets when the app is
+closed and cannot leak into the player's actual phone. A validation check
+enforces that `deviceSim.tsx` imports no storage. The only genuinely real,
+persistent things remain the clock and battery readings (read-only).

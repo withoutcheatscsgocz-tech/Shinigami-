@@ -4,7 +4,13 @@
 // caseData.ts has no runtime imports (only `import type`), so Node's type
 // stripping can load it directly without a bundler.
 
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 import { caseData } from '../src/game/caseData.ts'
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+const read = (p: string) => readFileSync(join(root, p), 'utf8')
 
 let errors = 0
 let checks = 0
@@ -111,6 +117,28 @@ for (const t of caseData.threads)
 // --- defiance + ending wiring ---------------------------------------------
 check(caseData.defiance.length >= 5, `>=5 defiance replies (have ${caseData.defiance.length})`)
 check(caseData.ending.epilogue.length >= 3, 'epilogue has lines')
+
+// --- layout contract: the page must be locked so the phone shell can't scroll
+//     like a webpage (Bug 1 regression guard). Visual fullscreen still has to
+//     be re-confirmed on a real device after shell changes — see ANDROID_BUILD.
+const html = read('index.html')
+check(/position:\s*fixed/.test(html), 'index.html body is position:fixed (no page scroll)')
+check(/overflow:\s*hidden/.test(html), 'index.html body is overflow:hidden')
+check(/overscroll-behavior:\s*none/.test(html), 'index.html disables overscroll')
+const css = read('src/index.css')
+// The phone shell must not reintroduce centering margins at phone widths; any
+// bezel/margin lives only behind the desktop (min-width: 768px) media query.
+const shellBlock = css.slice(css.indexOf('.phone-shell'), css.indexOf('@media'))
+check(!/margin/.test(shellBlock), 'phone-shell has no margin at phone widths (fills viewport)')
+
+// --- simulated settings must NOT be persisted (Feature 4 leak guard): the
+//     device-sim layer must not import the storage module. ----------------
+const deviceSim = read('src/game/deviceSim.tsx')
+const simImports = (deviceSim.match(/^\s*import .*$/gm) ?? []).join('\n')
+check(
+  !/from ['"].*storage['"]|@capacitor\/preferences|localStorage\s*[.[]/.test(simImports + '\n' + deviceSim.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '')),
+  'deviceSim does not persist (no storage/Preferences/localStorage usage)',
+)
 
 console.log(
   `\n${errors === 0 ? '✓ PASS' : '✗ FAIL'} — ${checks - errors}/${checks} checks ok` +

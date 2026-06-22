@@ -25,6 +25,13 @@ export function HomeScreen() {
     return undefined
   }
 
+  // Early-game nudge: in Act 1 only, gently pulse the apps the player should
+  // look at first (Messages and the Assistant brief), so a fresh player isn't
+  // lost. Disabled from Act 2 on to avoid hand-holding the rest of the game.
+  function pulseFor(id: AppId): boolean {
+    return state.act === 1 && (id === 'messages' || id === 'assistant')
+  }
+
   return (
     <div
       className={`relative flex h-full flex-col bg-gradient-to-b from-indigo-950 via-zinc-950 to-black ${
@@ -43,7 +50,7 @@ export function HomeScreen() {
             onClick={() => openApp(meta.id)}
             className="flex flex-col items-center gap-1 active:opacity-70"
           >
-            <AppIcon meta={meta} badge={badgeFor(meta.id)} />
+            <AppIcon meta={meta} badge={badgeFor(meta.id)} pulse={pulseFor(meta.id)} />
             <span className="text-[11px] font-medium text-white/90 drop-shadow">{meta.label}</span>
           </button>
         ))}
@@ -69,7 +76,7 @@ export function HomeScreen() {
               onClick={() => openApp(APP_META[meta.id].id)}
               className="active:opacity-70"
             >
-              <AppIcon meta={meta} badge={badgeFor(meta.id)} />
+              <AppIcon meta={meta} badge={badgeFor(meta.id)} pulse={pulseFor(meta.id)} />
             </button>
           ))}
         </div>

@@ -4,6 +4,7 @@
 import { useGame } from './game/state'
 import { useShell } from './ui/shell'
 import { useEvents } from './game/useEvents'
+import { useDeviceSim } from './game/deviceSim'
 import { StatusBar } from './components/StatusBar'
 import { NavBar } from './components/NavBar'
 import { Banners } from './components/Banners'
@@ -71,6 +72,7 @@ export default function App() {
     return (
       <div className="phone-shell">
         <Ending />
+        <BrightnessOverlay />
       </div>
     )
   }
@@ -90,6 +92,20 @@ export default function App() {
         <Banners />
       </main>
       {!onLock && <NavBar />}
+      <BrightnessOverlay />
     </div>
+  )
+}
+
+// Simulated brightness: a black dimming layer over the whole shell. This only
+// affects the game's own UI — it never changes the real device brightness.
+function BrightnessOverlay() {
+  const { brightness } = useDeviceSim()
+  if (brightness >= 0.999) return null
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 z-[60] bg-black transition-opacity duration-200"
+      style={{ opacity: 1 - brightness }}
+    />
   )
 }

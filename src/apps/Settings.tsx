@@ -6,13 +6,16 @@ import { useState } from 'react'
 import { AppFrame } from '../components/AppFrame'
 import { useBattery } from '../game/useDevice'
 import { useGame } from '../game/state'
+import { useDeviceSim } from '../game/deviceSim'
 import { caseData } from '../game/caseData'
+import { tap } from '../ui/haptics'
 
 type Pane = 'root' | 'assistant' | 'about' | 'reset'
 
 export function Settings() {
   const { state, resetGame } = useGame()
   const battery = useBattery()
+  const sim = useDeviceSim()
   const [pane, setPane] = useState<Pane>('root')
 
   if (pane === 'assistant') return <AssistantPane act={state.act} onBack={() => setPane('root')} />
@@ -33,18 +36,26 @@ export function Settings() {
           </div>
         </div>
 
+        {/* Interactive, in-game-only device controls (see deviceSim.tsx).
+            These simulate the effect inside the app and never touch the real
+            device; they reset when the app is closed. */}
         <Group>
-          <Row icon="✈️" label="Airplane Mode" value="Off" />
-          <Row icon="📶" label="Wi-Fi" value="Meridian_5G" />
-          <Row icon="🔵" label="Bluetooth" value="On" />
-          <Row icon="📱" label="Mobile Data" value="On" />
+          <ToggleRow icon="📶" label="Wi-Fi" sub={sim.wifi ? 'Meridian_5G' : 'Off'} on={sim.wifi} onToggle={sim.toggleWifi} />
+          <ToggleRow icon="📱" label="Mobile Data" sub={sim.mobileData ? '5G' : 'Off'} on={sim.mobileData} onToggle={sim.toggleMobileData} />
+          <ToggleRow icon="📳" label="Haptics" sub={sim.haptics ? 'On' : 'Off'} on={sim.haptics} onToggle={sim.toggleHaptics} />
+          <SliderRow
+            icon="🔆"
+            label="Brightness"
+            value={sim.brightness}
+            onChange={sim.setBrightness}
+          />
         </Group>
 
         <Group>
           <Row icon="🔋" label="Battery" value={`${battery.level}%${battery.charging ? ' ⚡' : ''}`} />
-          <Row icon="🌙" label="Display & Brightness" value="" chevron />
+          <Row icon="✈️" label="Airplane Mode" value="Off" />
+          <Row icon="🔵" label="Bluetooth" value="On" />
           <Row icon="🔔" label="Notifications" value="" chevron />
-          <Row icon="🔊" label="Sounds & Haptics" value="" chevron />
         </Group>
 
         <Group>
@@ -177,5 +188,74 @@ function Row({
       <span className={`text-[14px] ${highlight ? 'text-red-400' : 'text-white/45'}`}>{value}</span>
       {chevron && <span className="text-white/30">›</span>}
     </button>
+  )
+}
+
+function ToggleRow({
+  icon,
+  label,
+  sub,
+  on,
+  onToggle,
+}: {
+  icon: string
+  label: string
+  sub: string
+  on: boolean
+  onToggle: () => void
+}) {
+  return (
+    <div className="flex items-center gap-3 border-b border-white/5 px-4 py-3 last:border-0">
+      <span className="text-lg">{icon}</span>
+      <div className="flex-1">
+        <div className="text-[15px] text-white">{label}</div>
+        <div className="text-[12px] text-white/40">{sub}</div>
+      </div>
+      <button
+        onClick={() => {
+          void tap()
+          onToggle()
+        }}
+        role="switch"
+        aria-checked={on}
+        className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${on ? 'bg-green-500' : 'bg-white/20'}`}
+      >
+        <span
+          className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-5' : 'translate-x-0.5'}`}
+        />
+      </button>
+    </div>
+  )
+}
+
+function SliderRow({
+  icon,
+  label,
+  value,
+  onChange,
+}: {
+  icon: string
+  label: string
+  value: number
+  onChange: (v: number) => void
+}) {
+  return (
+    <div className="flex items-center gap-3 px-4 py-3">
+      <span className="text-lg">{icon}</span>
+      <div className="flex-1">
+        <div className="mb-1.5 flex justify-between text-[15px] text-white">
+          <span>{label}</span>
+          <span className="text-[13px] text-white/40">{Math.round(value * 100)}%</span>
+        </div>
+        <input
+          type="range"
+          min={15}
+          max={100}
+          value={Math.round(value * 100)}
+          onChange={(e) => onChange(Number(e.target.value) / 100)}
+          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-white"
+        />
+      </div>
+    </div>
   )
 }

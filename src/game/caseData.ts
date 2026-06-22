@@ -749,8 +749,8 @@ export const caseData: CaseData = {
 
   // ---------------------------------------------------------- assistant tasks
   assistantTasks: [
-    { id: 'as1', act: 1, text: 'You there? This is his phone. He’s been missing since Saturday. Go through it and find out what happened. Start with the messages.', goal: 'read-clara' },
-    { id: 'as2', act: 1, text: 'Good. Who’s the girlfriend? Read her thread and tell me the last thing she said.', goal: 'read-clara' },
+    { id: 'as1', act: 1, text: 'You there? This is his phone. He’s been missing since Saturday. Open the Messages app and read his conversations — start with the pinned one, “Clara ❤️”. Tell me the last thing she said to him.', goal: 'read-clara' },
+    { id: 'as2', act: 1, text: 'Clara’s his girlfriend. Once you’ve read her thread, open the Photos app — there’ll be a locked album. We’ll need to get into it.', goal: 'read-clara' },
     { id: 'as3', act: 2, text: 'There’s a locked photo album. Find the password and open it. It matters.', goal: 'open-private' },
     { id: 'as4', act: 2, text: 'Someone’s been threatening him about money. Look into it. Could be why he ran.', goal: 'visit-A' },
     { id: 'as5', act: 3, text: 'The calculator on the home screen isn’t a calculator. Get into it.', goal: 'open-calc' },
@@ -769,7 +769,8 @@ export const caseData: CaseData = {
 
   // -------------------------------------------------------------------- events
   events: [
-    { id: 'ev-boot', onAct: 1, app: 'messages', title: 'Unknown', body: 'You there?', kind: 'assistant' },
+    { id: 'ev-boot', onAct: 1, app: 'messages', title: 'Unknown', body: 'You there? Open Messages — read his chats with Clara ❤️ first.', kind: 'assistant' },
+    { id: 'ev-boot2', onAct: 1, afterMs: 18000, app: 'messages', title: 'Unknown', body: 'Tap the Messages icon (the badge shows unread). Start there.', kind: 'assistant' },
     { id: 'ev-a2', onAct: 2, app: 'messages', title: 'Paige Bennett', body: 'where IS she, Adam', kind: 'message' },
     { id: 'ev-glitch1', onAct: 3, title: '', body: '', kind: 'glitch' },
     { id: 'ev-backup', onAct: 3, app: 'messages', title: '88100', body: 'Data backup completed: 1,204 photos, 38 voice memos.', kind: 'system' },

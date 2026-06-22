@@ -42,7 +42,7 @@ export const GRID_APPS = Object.values(APP_META)
   .filter((a) => a.where === 'grid')
   .sort((a, b) => a.order - b.order)
 
-export function AppIcon({ meta, badge }: { meta: AppMeta; badge?: number }) {
+export function AppIcon({ meta, badge, pulse }: { meta: AppMeta; badge?: number; pulse?: boolean }) {
   return (
     <div className="relative">
       <div
@@ -51,7 +51,11 @@ export function AppIcon({ meta, badge }: { meta: AppMeta; badge?: number }) {
         <span className="drop-shadow">{meta.glyph}</span>
       </div>
       {badge ? (
-        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-bold text-white ring-2 ring-black/10">
+        <span
+          className={`absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-bold text-white ring-2 ring-black/10 ${
+            pulse ? 'animate-pulse' : ''
+          }`}
+        >
           {badge > 99 ? '99+' : badge}
         </span>
       ) : null}

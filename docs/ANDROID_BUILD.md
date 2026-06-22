@@ -54,6 +54,28 @@ the web Battery Status API in a browser. To verify on an emulator:
 If neither source is available (e.g. a desktop browser without the Battery API)
 the battery falls back to a believable static value and never crashes.
 
+## Full-screen / no-scroll QA (must re-confirm on a real device)
+
+The phone shell must fill the screen exactly and the page must never scroll like
+a webpage. This behaves differently in a desktop browser than in a real Android
+WebView, so **after any change to the shell, layout CSS, `index.html`, or the
+native immersive code, re-confirm on a real device (or emulator) at more than
+one screen size**:
+
+- The shell fills the whole screen — no black bars above/below, no rounded
+  desktop "bezel".
+- You **cannot** drag/scroll the whole phone mockup; only content *inside* an
+  app scrolls.
+- The real Android status/navigation bars are hidden (immersive); only the
+  game's own fake status bar shows. The fake clock isn't hidden behind a camera
+  cutout.
+
+A file-level guard in `scripts/validate.ts` (`npm run validate`) checks the
+no-scroll CSS contract (body `position: fixed` + `overflow: hidden`, no shell
+margins at phone widths) so a regression fails CI — but the **visual** result
+still has to be eyeballed on a device, since CSS-passing ≠ looks-right in a real
+WebView.
+
 ## Building the APK in CI (no local SDK needed)
 
 A GitHub Actions workflow at `.github/workflows/android-build.yml` builds the
