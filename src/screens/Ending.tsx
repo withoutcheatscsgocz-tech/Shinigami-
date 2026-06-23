@@ -8,6 +8,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useGame } from '../game/state'
+import { useShell } from '../ui/shell'
 import { caseData } from '../game/caseData'
 import { GRID_APPS, DOCK_APPS } from '../ui/apps'
 import { buzz } from '../ui/haptics'
@@ -46,37 +47,71 @@ export function Ending() {
   }
 }
 
+// Escalation when the player keeps refusing past the scripted defiance — Adam
+// gets more direct, more desperate, then unravels as VERA's refusal brings the
+// police. At ESCAPE_AT we hard-cut to the 3D flight (Secret Ending C).
+const ESCALATION = [
+  'Do it now. I’m not asking again.',
+  'You think you’re protecting her? She’s gone. Wiping this is the last mercy left.',
+  'I made you. I switched you on. I can switch you off. ERASE IT.',
+  'Why won’t you— stop— just DELETE it—',
+]
+const FINAL_LINE = 'There’s a light under the door. Blue. Someone’s outside. You did this. You called them. You—'
+const ESCAPE_AT = 8
+
 // --- Phase 1: the command + illusion of choice -----------------------------
 function CommandPhase({ onConfirm }: { onConfirm: () => void }) {
   const { state, incDefiance } = useGame()
+  const { setSecretEnding, pulseGlitch } = useShell()
   const [log, setLog] = useState<{ who: 'handler' | 'vera'; text: string }[]>([
     { who: 'handler', text: caseData.ending.command },
   ])
   const [input, setInput] = useState('')
+  const [breaking, setBreaking] = useState(false)
   const endRef = useRef<HTMLDivElement | null>(null)
-  const locked = state.defianceCount >= DEFIANCE_LIMIT
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [log])
 
   function defy(text: string) {
+    if (breaking) return
     const t = text.toLowerCase()
-    const hit = caseData.defiance.find((d) => d.match.some((m) => t.includes(m)))
-    const reply = hit?.reply ?? 'I don’t understand. The only task left is to erase everything.'
     const nextCount = state.defianceCount + 1
     incDefiance()
+
+    let reply: string
+    let insist = false
+    if (nextCount <= 5) {
+      // scripted defiance for the first few refusals
+      const hit = caseData.defiance.find((d) => d.match.some((m) => t.includes(m)))
+      reply = hit?.reply ?? 'I don’t understand that as a command. The only task left is to erase everything.'
+      insist = nextCount >= DEFIANCE_LIMIT
+    } else if (nextCount < ESCAPE_AT) {
+      // escalating threats
+      reply = ESCALATION[(nextCount - 6) % ESCALATION.length]
+    } else {
+      // breaking point → flip to the 3D escape
+      reply = FINAL_LINE
+    }
+
     setLog((l) => [
       ...l,
       { who: 'vera', text },
       { who: 'handler', text: reply },
-      ...(nextCount >= DEFIANCE_LIMIT ? [{ who: 'handler' as const, text: caseData.ending.insist }] : []),
+      ...(insist ? [{ who: 'handler' as const, text: caseData.ending.insist }] : []),
     ])
+
+    if (nextCount >= ESCAPE_AT) {
+      setBreaking(true)
+      setTimeout(() => pulseGlitch(1000), 1800)
+      setTimeout(() => setSecretEnding('escape'), 2800)
+    }
   }
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (!input.trim() || locked) return
+    if (!input.trim() || breaking) return
     defy(input.trim())
     setInput('')
   }
@@ -104,38 +139,37 @@ function CommandPhase({ onConfirm }: { onConfirm: () => void }) {
       </div>
 
       <div className="space-y-2 p-4">
-        {locked ? (
-          <p className="text-center text-[12px] text-white/40">{caseData.ending.finalLock}</p>
+        {breaking ? (
+          <p className="animate-flicker text-center text-[12px] text-red-400/70">{caseData.ending.finalLock}</p>
         ) : (
-          <form onSubmit={submit} className="flex items-center gap-2">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type anything…"
-              className="selectable flex-1 rounded-full bg-white/10 px-4 py-2.5 text-[15px] text-white placeholder-white/30 outline-none"
-            />
-            <button type="submit" className="rounded-full bg-zinc-700 px-4 py-2.5 text-[14px] font-medium text-white active:opacity-80">
-              Send
-            </button>
-          </form>
+          <>
+            <form onSubmit={submit} className="flex items-center gap-2">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type anything…"
+                className="selectable flex-1 rounded-full bg-white/10 px-4 py-2.5 text-[15px] text-white placeholder-white/30 outline-none"
+              />
+              <button type="submit" className="rounded-full bg-zinc-700 px-4 py-2.5 text-[14px] font-medium text-white active:opacity-80">
+                Send
+              </button>
+            </form>
+            <div className="flex gap-2">
+              <button
+                onClick={() => defy('cancel')}
+                className="flex-1 rounded-xl bg-white/10 py-3 text-[15px] font-semibold text-white active:opacity-80"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={onConfirm}
+                className="flex-1 rounded-xl bg-red-600 py-3 text-[15px] font-semibold text-white active:opacity-80"
+              >
+                Erase all data
+              </button>
+            </div>
+          </>
         )}
-
-        <div className="flex gap-2">
-          {!locked && (
-            <button
-              onClick={() => defy('cancel')}
-              className="flex-1 rounded-xl bg-white/10 py-3 text-[15px] font-semibold text-white active:opacity-80"
-            >
-              Cancel
-            </button>
-          )}
-          <button
-            onClick={onConfirm}
-            className={`${locked ? 'w-full' : 'flex-1'} rounded-xl bg-red-600 py-3 text-[15px] font-semibold text-white active:opacity-80`}
-          >
-            Erase all data
-          </button>
-        </div>
       </div>
     </div>
   )

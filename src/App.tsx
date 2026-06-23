@@ -5,6 +5,8 @@ import { useGame } from './game/state'
 import { useShell } from './ui/shell'
 import { useEvents } from './game/useEvents'
 import { useDeviceSim } from './game/deviceSim'
+import { usePlaytime } from './game/playtime'
+import { SecretEndings } from './screens/SecretEndings'
 import { StatusBar } from './components/StatusBar'
 import { NavBar } from './components/NavBar'
 import { Banners } from './components/Banners'
@@ -80,8 +82,19 @@ function CurrentApp({ id }: { id: AppId }) {
 
 export default function App() {
   const { state, triggerTwist } = useGame()
-  const { view, goHome } = useShell()
+  const { view, goHome, secretEnding } = useShell()
   useEvents()
+  usePlaytime()
+
+  // Secret/alternate endings take over everything the moment they fire.
+  if (secretEnding) {
+    return (
+      <>
+        <SecretEndings which={secretEnding} />
+        <BrightnessOverlay />
+      </>
+    )
+  }
 
   const onLock = view === 'lock' || !state.phoneUnlocked
 

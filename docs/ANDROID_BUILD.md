@@ -81,15 +81,34 @@ WebView.
 `./gradlew assembleRelease` produces a **signed** release APK
 (`android/app/build/outputs/apk/release/app-release.apk`) using the keystore at
 `android/app/vera-release.jks` (generate it per the comment in
-`android/app/build.gradle`; it is **not** committed). A signed release build is
-treated better by Android than a debug build.
+`android/app/build.gradle`; it is **not** committed). Debug builds are also
+signed (with Android's standard debug key) — so the APK is **never unsigned**.
 
-That said: when you download/sideload **any** APK that isn't from the Play
-Store, Android/Play Protect shows an "unknown developer / this type of file can
-harm your device" prompt. That is inherent to sideloading and **cannot be fully
-removed** without publishing the app on Google Play — it's not a sign anything
-is wrong with the build. Tap **More details → Install anyway** (and, if your
-browser flags the download, "keep"/"download anyway").
+### What's fixable vs. inherent
+
+- **Inherent (cannot be removed):** when you install *any* app that didn't come
+  from the Google Play Store, Android's **Play Protect** shows *"App blocked /
+  Play Protect hasn't seen an app from this developer before."* This appears for
+  every sideloaded APK on Earth. The **only** way to make it disappear is to
+  publish the app on Google Play (paid developer account + review). It is **not**
+  a sign the build is broken or that anything scanned as malware.
+- **Fixable / already done:** shipping a proper **signed release** build (not a
+  raw debug build) is the cleanest form to sideload. Done.
+
+### Installing past the warning (non-technical, step by step)
+
+1. Download `VERA.apk` to the phone. If the browser says *"this type of file
+   can harm your device,"* tap **Download anyway / Keep**.
+2. Open the file (Downloads app or the download notification).
+3. If it says *"For your security, your phone isn't allowed to install unknown
+   apps from this source"* → tap **Settings** → toggle **Allow from this
+   source** on → press back.
+4. A blue **"App blocked by Play Protect"** box may appear. Tap **More details**
+   (small text) → **Install anyway**.
+5. It installs as **VERA**. (You can leave Play Protect on for everything else;
+   this choice is just for this one file.)
+
+> Everything above is normal for a personal app shared outside the Play Store.
 
 ## Building the APK in CI (no local SDK needed)
 

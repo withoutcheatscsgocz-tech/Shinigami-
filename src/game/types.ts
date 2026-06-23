@@ -71,6 +71,8 @@ export interface Message {
   spoofed?: boolean
   /** Earliest act this message is visible in (default 1). */
   act?: Act
+  /** Phishing link — tapping it triggers the comedic "virus" secret ending. */
+  scam?: boolean
 }
 
 export interface Thread {
@@ -278,4 +280,6 @@ export interface GameState {
   actStartedAt: number
   /** ids of scripted events already fired. */
   firedEvents: string[]
+  /** Cumulative REAL play time in ms (persisted; drives the timeout ending). */
+  playedMs: number
 }

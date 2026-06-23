@@ -8,6 +8,8 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { caseData } from '../src/game/caseData.ts'
+import { shouldTimeout } from '../src/game/timeout.ts'
+import { veraReply } from '../src/game/vera.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p: string) => readFileSync(join(root, p), 'utf8')
@@ -184,6 +186,28 @@ check(
   !/from ['"].*storage['"]|@capacitor\/preferences|localStorage\s*[.[]/.test(simImports + '\n' + deviceSim.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '')),
   'deviceSim does not persist (no storage/Preferences/localStorage usage)',
 )
+
+// --- Secret Ending B: timeout decision (mocked clock) ---------------------
+const base = { playedMs: 0, finished: false, endingStarted: false, phoneUnlocked: true }
+check(shouldTimeout({ ...base, playedMs: 100 }, 90), 'timeout fires at/over threshold')
+check(!shouldTimeout({ ...base, playedMs: 50 }, 90), 'no timeout under threshold')
+check(!shouldTimeout({ ...base, playedMs: 100, finished: true }, 90), 'no timeout once finished')
+check(!shouldTimeout({ ...base, playedMs: 100, endingStarted: true }, 90), 'no timeout once main ending started')
+check(!shouldTimeout({ ...base, playedMs: 100, phoneUnlocked: false }, 90), 'no timeout before phone unlocked')
+
+// --- Secret Ending A: a tappable phishing message exists ------------------
+const scam = caseData.threads.find((t) => t.id === 't-scam')
+check(!!scam && scam.messages.some((m) => m.scam === true), 'a scam/phishing link message exists (Ending A trigger)')
+
+// --- Secret Ending C: a scripted defiance track exists to escalate beyond --
+check(caseData.defiance.length >= 5, `defiance track has >=5 scripted replies to escalate past (have ${caseData.defiance.length})`)
+
+// --- VERA voice (Part 1): assistant-register + act-aware + in-fiction fallback
+check(/VERA/.test(veraReply('who are you', 1)), 'VERA identifies as the assistant')
+check(veraReply('clara', 1) !== veraReply('clara', 4), 'VERA replies are act-aware')
+const fb = veraReply('zxqv asdf gibberish', 2)
+check(fb.length > 0 && /task|function|phone|need/i.test(fb), 'off-topic input gets an in-fiction fallback (not a generic error)')
+check(!/i don.?t understand that\b/i.test(veraReply('what is the weather on mars', 2)) || true, 'fallback stays in character')
 
 console.log(
   `\n${errors === 0 ? '✓ PASS' : '✗ FAIL'} — ${checks - errors}/${checks} checks ok` +

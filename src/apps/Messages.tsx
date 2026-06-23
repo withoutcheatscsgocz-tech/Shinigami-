@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { AppFrame } from '../components/AppFrame'
 import { caseData } from '../game/caseData'
 import { useGame } from '../game/state'
+import { useShell } from '../ui/shell'
 import type { Message, Thread } from '../game/types'
 import { fmtTime, fmtDate, fmtDayLabel } from '../ui/format'
 
@@ -105,6 +106,22 @@ function Conversation({ thread, onBack }: { thread: Thread; onBack: () => void }
 function Bubble({ msg, thread }: { msg: Message; thread: Thread }) {
   const mine = msg.from === 'me'
   const sender = mine ? null : caseData.contacts[msg.from]
+  const { setSecretEnding } = useShell()
+
+  // Phishing link — tapping it triggers the comedic "virus" secret ending.
+  if (msg.scam) {
+    return (
+      <div className="flex justify-start">
+        <button
+          onClick={() => setSecretEnding('scam')}
+          className="max-w-[78%] rounded-2xl rounded-bl-md bg-zinc-800 px-3.5 py-2 text-left text-[15px] leading-snug text-sky-400 underline decoration-sky-400/50 active:opacity-70"
+        >
+          {msg.text}
+          <div className="mt-0.5 text-[10px] text-white/35">{fmtTime(msg.ts)}</div>
+        </button>
+      </div>
+    )
+  }
 
   if (msg.kind === 'system' || (!msg.text && !msg.media && !msg.voice)) {
     return (

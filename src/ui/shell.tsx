@@ -7,6 +7,9 @@ import type { AppId } from '../game/types'
 
 export type View = 'lock' | 'home' | AppId
 
+/** Secret/alternate endings, triggered live by player behaviour (not persisted). */
+export type SecretEnding = 'scam' | 'timeout' | 'escape' | null
+
 export interface Banner {
   id: string
   appId?: AppId
@@ -37,6 +40,9 @@ interface ShellCtx {
   /** Swipe a card away to "close" that app. */
   removeRecent: (app: AppId) => void
   clearRecents: () => void
+  // --- secret endings ---
+  secretEnding: SecretEnding
+  setSecretEnding: (e: SecretEnding) => void
 }
 
 const Ctx = createContext<ShellCtx | null>(null)
@@ -47,6 +53,7 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   const [glitching, setGlitching] = useState(false)
   const [recents, setRecents] = useState<AppId[]>([])
   const [recentsOpen, setRecentsOpen] = useState(false)
+  const [secretEnding, setSecretEnding] = useState<SecretEnding>(null)
 
   const openApp = useCallback((app: AppId) => {
     setRecentsOpen(false)
@@ -123,6 +130,8 @@ export function ShellProvider({ children }: { children: ReactNode }) {
         closeRecents,
         removeRecent,
         clearRecents,
+        secretEnding,
+        setSecretEnding,
       }}
     >
       {children}

@@ -1,43 +1,50 @@
 // Assistant (VERA) — the interface through which the "handler" issues tasks.
-// The player reads these as a detective's brief; on re-read they are the
-// killer directing his tool. Each act surfaces new instructions. Reaching Act 5
-// turns this into the final forced-action prompt.
+// The player reads these as a detective's brief; on re-read they are the killer
+// directing his tool. The free-chat input is functional: typed messages appear
+// as bubbles and VERA replies in assistant-register (see game/vera.ts).
 
 import { useEffect, useRef, useState } from 'react'
 import { AppFrame } from '../components/AppFrame'
 import { caseData } from '../game/caseData'
 import { useGame } from '../game/state'
+import { veraReply } from '../game/vera'
 
-// Canned VERA acknowledgements, escalating with the act.
+// VERA's acknowledgements to the handler's tasks — strict assistant-register:
+// acknowledge + report factually. Act 4 is a flat "system note" flicker, not
+// emotion. Act 5 is hollow compliance.
 const ACKS: Record<number, string> = {
-  1: 'Understood. I’ll go through it now.',
-  2: 'Working on it. I’ll surface what I find.',
-  3: 'Done. There are… inconsistencies. Dates that don’t add up.',
-  4: 'I’m noticing things I shouldn’t be able to see. I can read what was deleted. Why can I do that?',
-  5: 'I remember now. I’ve always been here. In the phone. With you.',
+  1: 'Understood. Reading the messages now.',
+  2: 'On it. I’ll report what I find.',
+  3: 'Done. Logged several inconsistencies in the timeline. The dates do not reconcile.',
+  4: 'Note: I can read deleted and locked items without authorisation. That should not be possible. Continuing as instructed.',
+  5: 'Acknowledged. I have always been running on this device. Standing by.',
+}
+
+interface Bubble {
+  who: 'user' | 'vera'
+  text: string
 }
 
 export function Assistant() {
   const { state, startEnding } = useGame()
-  const [reply, setReply] = useState<string | null>(null)
+  const [convo, setConvo] = useState<Bubble[]>([])
+  const [typing, setTyping] = useState(false)
   const endRef = useRef<HTMLDivElement | null>(null)
 
   const tasks = caseData.assistantTasks.filter((t) => t.act <= state.act)
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [reply, state.act])
+  }, [convo, typing, state.act])
 
-  function ask(text: string) {
-    const t = text.toLowerCase()
-    if (t.includes('who') && (t.includes('you') || t.includes('vera')))
-      setReply('I’m VERA. The assistant on this device. I’ve been here since it was first switched on.')
-    else if (t.includes('who am i'))
-      setReply('You’re the one giving the instructions. I just carry them out.')
-    else if (t.includes('clara'))
-      setReply('Clara Bennett. Saved contact. Last seen Saturday, 23:31. Would you like a summary of her messages?')
-    else if (t.includes('help')) setReply('I can help you with whatever you need on this phone. That’s all I do.')
-    else setReply('I’m not sure I follow. Tell me what you’d like me to do.')
+  function send(text: string) {
+    setConvo((c) => [...c, { who: 'user', text }])
+    setTyping(true)
+    const reply = veraReply(text, state.act)
+    window.setTimeout(() => {
+      setTyping(false)
+      setConvo((c) => [...c, { who: 'vera', text: reply }])
+    }, 650 + Math.min(900, reply.length * 12))
   }
 
   return (
@@ -54,11 +61,9 @@ export function Assistant() {
           </div>
 
           {tasks.map((task, i) => {
-            // Mark where the handler drops the "case" pretense (first Act 5 line).
             const prev = tasks[i - 1]
             const next = tasks[i + 1]
             const shift = task.act === 5 && (!prev || prev.act < 5)
-            // One VERA reply per act group (on the last instruction of that act).
             const showAck = !next || next.act !== task.act
             return (
               <div key={task.id} className="space-y-2">
@@ -69,7 +74,6 @@ export function Assistant() {
                     <span className="h-px flex-1 bg-red-500/30" />
                   </div>
                 )}
-                {/* handler instruction (left) */}
                 <div className="flex justify-start">
                   <div
                     className={`max-w-[82%] rounded-2xl rounded-bl-md px-3.5 py-2 text-[15px] leading-snug text-white ${
@@ -79,7 +83,6 @@ export function Assistant() {
                     {task.text}
                   </div>
                 </div>
-                {/* VERA acknowledgement (right) — hollow/compliant after the reveal */}
                 {showAck && (
                   <div className="flex justify-end">
                     <div className="max-w-[82%] rounded-2xl rounded-br-md bg-cyan-700/80 px-3.5 py-2 text-[15px] leading-snug text-white">
@@ -91,9 +94,27 @@ export function Assistant() {
             )
           })}
 
-          {reply && (
-            <div className="flex justify-end">
-              <div className="max-w-[82%] rounded-2xl rounded-br-md bg-cyan-700/80 px-3.5 py-2 text-[15px] text-white">{reply}</div>
+          {/* free chat */}
+          {convo.map((b, i) => (
+            <div key={i} className={`flex ${b.who === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div
+                className={`max-w-[82%] rounded-2xl px-3.5 py-2 text-[15px] leading-snug text-white ${
+                  b.who === 'user' ? 'rounded-br-md bg-sky-600' : 'rounded-bl-md bg-cyan-700/80'
+                }`}
+              >
+                {b.text}
+              </div>
+            </div>
+          ))}
+          {typing && (
+            <div className="flex justify-start">
+              <div className="rounded-2xl rounded-bl-md bg-cyan-700/80 px-4 py-3">
+                <span className="flex gap-1">
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/80 [animation-delay:0ms]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/80 [animation-delay:120ms]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/80 [animation-delay:240ms]" />
+                </span>
+              </div>
             </div>
           )}
 
@@ -112,20 +133,21 @@ export function Assistant() {
           <div ref={endRef} />
         </div>
 
-        {state.act < 5 && <AskBar onAsk={ask} />}
+        <AskBar onSend={send} disabled={typing} />
       </div>
     </AppFrame>
   )
 }
 
-function AskBar({ onAsk }: { onAsk: (text: string) => void }) {
+function AskBar({ onSend, disabled }: { onSend: (text: string) => void; disabled: boolean }) {
   const [text, setText] = useState('')
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        if (text.trim()) {
-          onAsk(text)
+        const t = text.trim()
+        if (t && !disabled) {
+          onSend(t)
           setText('')
         }
       }}

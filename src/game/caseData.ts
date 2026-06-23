@@ -520,6 +520,8 @@ export const caseData: CaseData = {
       act: 1,
       messages: [
         { id: 'sc1', from: 'scam', text: 'HMRC FINAL NOTICE: you are owed a tax refund of £318.42. Claim now: hmrc-refund-uk[.]info/claim', ts: '2026-06-01T14:22', act: 1 },
+        { id: 'sc2', from: 'scam', text: 'MISSING PERSON REWARD 💰 We have a TIP about Clara Bennett. Claim the £50,000 reward + a FREE iPhone — verify your details now:', ts: '2026-06-08T03:11', act: 1 },
+        { id: 'sc3', from: 'scam', text: 'tap to claim ➡ clara-tip-reward-official[.]biz/win', ts: '2026-06-08T03:11', act: 1, scam: true },
       ],
     },
 

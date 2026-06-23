@@ -33,6 +33,7 @@ const initialState: GameState = {
   finished: false,
   actStartedAt: Date.now(),
   firedEvents: [],
+  playedMs: 0,
 }
 
 // Gate goal that completes each act -> the act it advances to.
@@ -58,6 +59,7 @@ type Action =
   | { type: 'INC_DEFIANCE' }
   | { type: 'START_ENDING' }
   | { type: 'FINISH' }
+  | { type: 'ADD_PLAYTIME'; ms: number }
   | { type: 'RESET' }
 
 function add<T>(arr: T[], v: T): T[] {
@@ -120,6 +122,8 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...state, endingStarted: true, act: 5 }
     case 'FINISH':
       return { ...state, finished: true }
+    case 'ADD_PLAYTIME':
+      return { ...state, playedMs: state.playedMs + action.ms }
     case 'RESET':
       return { ...initialState, actStartedAt: Date.now() }
     default:
@@ -143,6 +147,7 @@ interface Ctx {
   incDefiance: () => void
   startEnding: () => void
   finish: () => void
+  addPlaytime: (ms: number) => void
   resetGame: () => void
   /** Verify a password by id; on success records it solved. Returns boolean. */
   tryPassword: (passwordId: string, value: string) => boolean
@@ -194,6 +199,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     incDefiance: () => dispatch({ type: 'INC_DEFIANCE' }),
     startEnding: () => dispatch({ type: 'START_ENDING' }),
     finish: () => dispatch({ type: 'FINISH' }),
+    addPlaytime: (ms) => dispatch({ type: 'ADD_PLAYTIME', ms }),
     resetGame: () => {
       void removeRaw(SAVE_KEY)
       dispatch({ type: 'RESET' })
