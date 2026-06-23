@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Phone</string>
-    <string name="title_activity_main">Phone</string>
+    <string name="app_name">VERA</string>
+    <string name="title_activity_main">VERA</string>
     <string name="package_name">cz.shinigami.cizimobil</string>
     <string name="custom_url_scheme">cz.shinigami.cizimobil</string>
 </resources>

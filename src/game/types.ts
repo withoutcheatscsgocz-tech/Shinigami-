@@ -25,6 +25,12 @@ export type AppId =
   | 'browser'
   | 'music'
   | 'weather'
+  | 'mail'
+  | 'clock'
+  | 'health'
+  | 'camera'
+  | 'reminders'
+  | 'podcasts'
 
 /** A person in the phone's contacts. */
 export interface Contact {

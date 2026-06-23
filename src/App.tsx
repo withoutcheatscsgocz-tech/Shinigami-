@@ -25,6 +25,8 @@ import { Assistant } from './apps/Assistant'
 import { Settings } from './apps/Settings'
 import { Phone, Bank, Browser, Music, Weather } from './apps/FlavorApps'
 import { Files } from './apps/Files'
+import { Mail } from './apps/Mail'
+import { Clock, Health, Camera, Reminders, Podcasts } from './apps/ExtraApps'
 import type { AppId } from './game/types'
 
 function CurrentApp({ id }: { id: AppId }) {
@@ -59,6 +61,18 @@ function CurrentApp({ id }: { id: AppId }) {
       return <Music />
     case 'weather':
       return <Weather />
+    case 'mail':
+      return <Mail />
+    case 'clock':
+      return <Clock />
+    case 'health':
+      return <Health />
+    case 'camera':
+      return <Camera />
+    case 'reminders':
+      return <Reminders />
+    case 'podcasts':
+      return <Podcasts />
     default:
       return <Placeholder id={id} />
   }

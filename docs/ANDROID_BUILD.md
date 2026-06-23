@@ -76,6 +76,21 @@ margins at phone widths) so a regression fails CI — but the **visual** result
 still has to be eyeballed on a device, since CSS-passing ≠ looks-right in a real
 WebView.
 
+## Signed release build & the "dangerous app" warning
+
+`./gradlew assembleRelease` produces a **signed** release APK
+(`android/app/build/outputs/apk/release/app-release.apk`) using the keystore at
+`android/app/vera-release.jks` (generate it per the comment in
+`android/app/build.gradle`; it is **not** committed). A signed release build is
+treated better by Android than a debug build.
+
+That said: when you download/sideload **any** APK that isn't from the Play
+Store, Android/Play Protect shows an "unknown developer / this type of file can
+harm your device" prompt. That is inherent to sideloading and **cannot be fully
+removed** without publishing the app on Google Play — it's not a sign anything
+is wrong with the build. Tap **More details → Install anyway** (and, if your
+browser flags the download, "keep"/"download anyway").
+
 ## Building the APK in CI (no local SDK needed)
 
 A GitHub Actions workflow at `.github/workflows/android-build.yml` builds the

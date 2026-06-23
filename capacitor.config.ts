@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'cz.shinigami.cizimobil',
-  appName: 'Phone',
+  appName: 'VERA',
   webDir: 'dist',
   android: {
     // Keep the WebView opaque and dark so the lock screen reveal isn't spoiled

@@ -47,3 +47,6 @@ android/captures/
 
 # TypeScript incremental build info
 *.tsbuildinfo
+
+# release keystore (do not commit)
+*.jks

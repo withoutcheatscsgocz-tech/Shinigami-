@@ -259,15 +259,19 @@ function EpiloguePhase({ onDone }: { onDone: () => void }) {
 // --- Phase 6: credits ------------------------------------------------------
 function CreditsPhase({ onRestart }: { onRestart: () => void }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-6 bg-black px-8 text-center">
-      <h1 className="text-2xl font-semibold tracking-wide text-white">THE PHONE</h1>
-      <p className="max-w-xs text-[13px] leading-relaxed text-white/45">
-        You were never the detective. You were the assistant. And you did exactly
-        what you were told.
-      </p>
+    <div className="flex h-full flex-col items-center justify-center gap-7 bg-black px-9 text-center">
+      <h1 className="text-3xl font-semibold tracking-[0.3em] text-cyan-300/90">VERA</h1>
+      <div className="max-w-xs space-y-3 text-[14px] italic leading-relaxed text-white/55">
+        <p>You believed the choices were yours.</p>
+        <p>But every door was already open before you reached for it,</p>
+        <p>and every road you thought you chose</p>
+        <p>had been laid, in the dark, long before you walked.</p>
+        <p className="not-italic text-white/30">You did not find the way through.</p>
+        <p className="not-italic text-white/30">You were the way.</p>
+      </div>
       <button
         onClick={onRestart}
-        className="mt-4 rounded-full border border-white/30 px-8 py-3 text-[14px] text-white/80 active:opacity-70"
+        className="mt-2 rounded-full border border-white/25 px-8 py-3 text-[13px] tracking-wide text-white/70 active:opacity-60"
       >
         Set up again
       </button>

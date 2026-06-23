@@ -16,10 +16,31 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Release signing. The keystore (android/app/vera-release.jks) is NOT
+    // committed; generate it once with:
+    //   keytool -genkeypair -keystore android/app/vera-release.jks -alias vera \
+    //     -keyalg RSA -keysize 2048 -validity 10000 -storepass verapass -keypass verapass
+    // A properly signed release APK is treated better than a debug build (Play
+    // Protect still shows a generic "unknown developer" prompt for any
+    // sideloaded app — that can't be removed without publishing to Play).
+    signingConfigs {
+        release {
+            def ks = file('vera-release.jks')
+            if (ks.exists()) {
+                storeFile ks
+                storePassword 'verapass'
+                keyAlias 'vera'
+                keyPassword 'verapass'
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (file('vera-release.jks').exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
